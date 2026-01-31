@@ -20,6 +20,7 @@ class ListViewModel : ViewModel() {
         getData()
     }
     fun getData(){
+
         viewModelScope.launch {
             _uiState.emit(ListState.Loading)
             getEmployeesUseCase.invoke().fold(
@@ -30,7 +31,8 @@ class ListViewModel : ViewModel() {
                     _uiState.emit(ListState.Error(e.message.orEmpty()))
                 }
             )
-
         }
+
     }
+
 }

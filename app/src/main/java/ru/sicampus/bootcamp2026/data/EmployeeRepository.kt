@@ -6,8 +6,8 @@ import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
 class EmployeeRepository(
     private val employeeListDataSource: EmployeeListDataSource
 ) {
-    suspend fun getUsers(): Result<List<EmployeeEntity>>{
-        return employeeListDataSource.getUser().map{ listDTO ->
+    suspend fun getUsers(query : String?): Result<List<EmployeeEntity>>{
+        return employeeListDataSource.getUser(query).map{ listDTO ->
             listDTO.mapNotNull { employeeDTO ->
                 EmployeeEntity(
                     name = employeeDTO.name ?: return@mapNotNull null,

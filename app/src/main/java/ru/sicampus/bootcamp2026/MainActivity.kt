@@ -45,6 +45,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     AndroidBootcamp2026FrontendTheme {
-        Greeting("Android")
+        Greeting("Android1")
     }
 }

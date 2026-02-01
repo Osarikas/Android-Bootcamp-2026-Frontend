@@ -13,7 +13,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 object Network {
-    const val HOST = "http://144.31.97.41:8080"
+    const val HOST = "https://bootcamp-back.indx0.ru"
     val client by lazy{
         HttpClient(CIO) {
         install(ContentNegotiation){

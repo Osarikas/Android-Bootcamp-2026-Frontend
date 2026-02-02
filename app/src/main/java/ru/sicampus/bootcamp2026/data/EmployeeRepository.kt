@@ -1,13 +1,13 @@
 package ru.sicampus.bootcamp2026.data
 
-import ru.sicampus.bootcamp2026.data.source.EmployeeListDataSource
+import ru.sicampus.bootcamp2026.data.source.EmployeeSearchDataSource
 import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
 
 class EmployeeRepository(
-    private val employeeListDataSource: EmployeeListDataSource
+    private val employeeListDataSource: EmployeeSearchDataSource
 ) {
-    suspend fun getUsers(query : String?): Result<List<EmployeeEntity>>{
-        return employeeListDataSource.getUser(query).map{ listDTO ->
+    suspend fun searchEmployees(query : String?): Result<List<EmployeeEntity>>{
+        return employeeListDataSource.searchEmployees(query).map{ listDTO ->
             listDTO.mapNotNull { employeeDTO ->
                 EmployeeEntity(
                     name = employeeDTO.name ?: return@mapNotNull null,

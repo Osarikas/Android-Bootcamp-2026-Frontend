@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.compose)
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

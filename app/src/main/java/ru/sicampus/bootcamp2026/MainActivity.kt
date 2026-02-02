@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import ru.sicampus.bootcamp2026.ui.main.MainScreen
+import ru.sicampus.bootcamp2026.ui.MainScreen
 import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 
 class MainActivity : ComponentActivity() {

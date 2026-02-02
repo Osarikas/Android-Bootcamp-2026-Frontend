@@ -1,12 +1,12 @@
-package ru.sicampus.bootcamp2026.ui.main.bottom_navigation
+package ru.sicampus.bootcamp2026.ui.bottom_navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import ru.sicampus.bootcamp2026.ui.main.screens.Inbox
-import ru.sicampus.bootcamp2026.ui.main.screens.Meetings
-import ru.sicampus.bootcamp2026.ui.main.screens.Profile
+import ru.sicampus.bootcamp2026.ui.screen.inbox.Inbox
+import ru.sicampus.bootcamp2026.ui.screen.meetings.Meetings
+import ru.sicampus.bootcamp2026.ui.screen.profile.Profile
 
 @Composable
 fun NavGraph(

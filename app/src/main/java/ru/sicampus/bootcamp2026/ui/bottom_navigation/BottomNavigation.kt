@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.main.bottom_navigation
+package ru.sicampus.bootcamp2026.ui.bottom_navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

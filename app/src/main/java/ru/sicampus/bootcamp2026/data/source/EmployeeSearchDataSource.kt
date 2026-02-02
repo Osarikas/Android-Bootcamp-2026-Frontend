@@ -8,8 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sicampus.bootcamp2026.data.dto.EmployeeDTO
 
-class EmployeeListDataSource {
-    suspend fun getUser(query: String?): Result<List<EmployeeDTO>> = withContext(Dispatchers.IO){
+class EmployeeSearchDataSource {
+    suspend fun searchEmployees(query: String?): Result<List<EmployeeDTO>> = withContext(Dispatchers.IO){
         runCatching {
             val result = Network.client.get("${Network.HOST}/api/employee/all"){
                 if (!query.isNullOrBlank()) {

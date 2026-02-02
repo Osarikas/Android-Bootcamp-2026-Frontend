@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.main.screens
+package ru.sicampus.bootcamp2026.ui.screen.meetings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

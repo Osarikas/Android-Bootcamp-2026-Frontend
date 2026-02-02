@@ -100,7 +100,15 @@ private fun ListContentState(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(color = Red, text = state.inputError ?: "")
+        Box(
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = state.inputError ?: "",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Red
+            )
+        }
         if (state.users.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),

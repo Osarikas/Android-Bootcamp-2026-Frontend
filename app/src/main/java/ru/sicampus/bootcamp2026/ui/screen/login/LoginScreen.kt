@@ -1,4 +1,4 @@
-package ru.innovationcampus.android.ui.screen.auth
+package ru.sicampus.bootcamp2026.ui.screen.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,15 +32,23 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.sicampus.bootcamp2026.ui.screen.login.LoginIntent
-import ru.sicampus.bootcamp2026.ui.screen.login.LoginState
-import ru.sicampus.bootcamp2026.ui.screen.login.LoginViewModel
+import androidx.navigation.NavController
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel(),
+    navController: NavController,
 ) {
     val state by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.actionFlow.collect{action ->
+            when(action) {
+                is LoginAction.OpenScreen -> navController.navigate(action.route)
+            }
+
+        }
+    }
 
     Column(
         modifier = Modifier

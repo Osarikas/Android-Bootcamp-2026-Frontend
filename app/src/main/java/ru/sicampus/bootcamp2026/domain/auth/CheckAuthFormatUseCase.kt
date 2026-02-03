@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.domain
+package ru.sicampus.bootcamp2026.domain.auth
 
 class CheckAuthFormatUseCase {
     operator fun invoke(
@@ -7,7 +7,7 @@ class CheckAuthFormatUseCase {
     ): Boolean {
         return login.length > 2 && login.all { char ->
             char.isLetterOrDigit() &&
-                    ((char in 'A'..'Z') || (char in 'a'..'z') || char.isDigit())
+                    ((char in 'A'..'Z') || (char in 'a'..'z') || char.isDigit()) || char == '_'
         } && password.isNotBlank()
     }
 }

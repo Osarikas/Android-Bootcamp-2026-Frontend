@@ -15,7 +15,7 @@ class EmployeeRepository(
                     username = employeeDTO.username ?: return@mapNotNull null,
                     email = employeeDTO.email ?: return@mapNotNull null,
                     phoneNumber = employeeDTO.phoneNumber ?: return@mapNotNull null,
-                    photoUrl = employeeDTO.photoUrl ?: return@mapNotNull null
+                    photoUrl = employeeDTO.photoUrl ?: ""
                 )
             }
 

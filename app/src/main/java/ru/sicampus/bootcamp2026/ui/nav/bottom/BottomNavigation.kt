@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.bottom_navigation
+package ru.sicampus.bootcamp2026.ui.nav.bottom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,13 +26,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.sicampus.bootcamp2026.ui.theme.BgGradient
 import ru.sicampus.bootcamp2026.ui.theme.Black
 import ru.sicampus.bootcamp2026.ui.theme.White
 
 @Composable
-fun BottomNavigation (
+fun BottomNavigation(
     navController: NavController
 ) {
     val listItems = listOf(
@@ -40,31 +42,45 @@ fun BottomNavigation (
         BottomNavigationItem.ScreenMeetings,
         BottomNavigationItem.ScreenProfile
     )
+
     Box(
-        modifier =  Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .height(128.dp)
             .background(brush = BgGradient)
     ) {
         Box(
             modifier = Modifier
-                .padding(40.dp, 16.dp, 40.dp, 24.dp)
+                .padding(horizontal = 40.dp, vertical = 16.dp)
+                .padding(bottom = 8.dp) // Небольшой отступ снизу
                 .clip(RoundedCornerShape(24.dp))
                 .background(color = Black)
         ) {
             val backStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = backStackEntry?.destination?.route
+
             Row(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                listItems.forEach {
+                listItems.forEach { item ->
+                    // НОВЫЙ СТИЛЬ: Проверка активного маршрута через hasRoute
+                    val isSelected = backStackEntry?.destination?.hasRoute(item.route::class) ?: false
+
                     BottomNavigationButton(
-                        it = it,
-                        isSelected = currentRoute == it.route,
-                        onSelected = { navController.navigate(it.route) }
+                        item = item,
+                        isSelected = isSelected,
+                        onSelected = {
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
                     )
                 }
             }
@@ -74,49 +90,45 @@ fun BottomNavigation (
 
 @Composable
 fun BottomNavigationButton(
-    it: BottomNavigationItem,
+    item: BottomNavigationItem,
     isSelected: Boolean,
     onSelected: () -> Unit
 ) {
-
-    val iconColor = if (isSelected) Black else White
-    val textColor = if (isSelected) Black else White
+    val contentColor = if (isSelected) Black else White
 
     Box(
         modifier = Modifier
             .size(72.dp)
-            .clickable(
-                onClick = onSelected,
-            ),
+            .clip(RoundedCornerShape(20.dp))
+            .clickable(onClick = onSelected),
         contentAlignment = Alignment.Center
     ) {
         if (isSelected) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(RoundedCornerShape(20.dp))
                     .background(White)
             )
         }
 
-        Column (
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Icon(
-                imageVector = ImageVector.vectorResource(it.iconId),
-                it.title,
-                tint = iconColor,
+                imageVector = ImageVector.vectorResource(item.iconId),
+                contentDescription = item.title,
+                tint = contentColor,
                 modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = it.title,
+                text = item.title,
                 fontSize = 10.sp,
-                color = textColor,
+                color = contentColor,
                 textAlign = TextAlign.Center,
                 maxLines = 1
             )
         }
     }
-
 }

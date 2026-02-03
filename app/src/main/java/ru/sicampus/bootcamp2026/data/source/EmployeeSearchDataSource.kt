@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.data.source
 
+import android.util.Log
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -12,13 +13,19 @@ class EmployeeSearchDataSource {
     suspend fun searchEmployees(query: String?): Result<List<EmployeeDTO>> = withContext(Dispatchers.IO){
         runCatching {
             val result = Network.client.get("${Network.HOST}/api/employee/all"){
+                addAuthHeader()
                 if (!query.isNullOrBlank()) {
                     parameter("search", query)
                 }
             }
+            if (result.status == HttpStatusCode.Unauthorized) {
+                AuthLocalDataSource.clearToken()
+                error("Unauthorized: Token cleared")
+            }
             if (result.status != HttpStatusCode.OK){
                 error("Status: ${result.status}")
             }
+            Log.d("KTOR", result.body())
             result.body()
         }
     }

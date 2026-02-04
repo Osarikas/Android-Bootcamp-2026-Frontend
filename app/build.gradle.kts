@@ -63,4 +63,6 @@ dependencies {
     implementation(libs.bundles.coil)
     implementation(libs.bundles.ktor)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
 }

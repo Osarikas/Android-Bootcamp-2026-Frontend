@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.login
+package ru.sicampus.bootcamp2026.ui.screen.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,17 +10,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
-import ru.sicampus.bootcamp2026.data.source.LoginNetworkDataSource
+import ru.sicampus.bootcamp2026.data.source.AuthNetworkDataSource
 import ru.sicampus.bootcamp2026.data.AuthRepository
-import ru.sicampus.bootcamp2026.domain.auth.CheckAndSaveAuthUseCase
+import ru.sicampus.bootcamp2026.domain.auth.CheckAndSaveLoginUseCase
 import ru.sicampus.bootcamp2026.domain.auth.CheckAuthFormatUseCase
 import ru.sicampus.bootcamp2026.ui.nav.AppRoute
 
 class LoginViewModel() : ViewModel() {
     private val checkAuthFormatUseCase by lazy { CheckAuthFormatUseCase() }
-    private val checkAndSaveAuthCodeUseCase by lazy { CheckAndSaveAuthUseCase(
+    private val checkAndSaveAuthCodeUseCase by lazy { CheckAndSaveLoginUseCase(
         AuthRepository(
-            loginNetworkDataSource = LoginNetworkDataSource(),
+            authNetworkDataSource = AuthNetworkDataSource(),
             authLocalDataSource = AuthLocalDataSource
         )
     ) }

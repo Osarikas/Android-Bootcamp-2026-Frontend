@@ -52,7 +52,6 @@ fun BottomNavigation(
         Box(
             modifier = Modifier
                 .padding(horizontal = 40.dp, vertical = 16.dp)
-                .padding(bottom = 8.dp) // Небольшой отступ снизу
                 .clip(RoundedCornerShape(24.dp))
                 .background(color = Black)
         ) {
@@ -66,7 +65,6 @@ fun BottomNavigation(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 listItems.forEach { item ->
-                    // НОВЫЙ СТИЛЬ: Проверка активного маршрута через hasRoute
                     val isSelected = backStackEntry?.destination?.hasRoute(item.route::class) ?: false
 
                     BottomNavigationButton(

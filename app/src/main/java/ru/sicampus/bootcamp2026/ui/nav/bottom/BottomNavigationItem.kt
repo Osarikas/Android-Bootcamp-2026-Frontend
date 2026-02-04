@@ -3,7 +3,6 @@ package ru.sicampus.bootcamp2026.ui.nav.bottom
 import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.ui.nav.AppRoute
 
-// Теперь route — это не String, а Any (любой из твоих объектов-маршрутов)
 sealed class BottomNavigationItem(val title: String, val iconId: Int, val route: Any) {
     object ScreenInbox : BottomNavigationItem("Входящие", R.drawable.ic_inbox, AppRoute.InboxRoute)
 

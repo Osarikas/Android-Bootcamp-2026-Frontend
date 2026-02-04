@@ -37,7 +37,7 @@ class MeetingViewModel : ViewModel() {
             if (_uiState.value !is EmployeeSearchState.Content) {
                 _uiState.emit(EmployeeSearchState.Loading)
             }
-            searchEmployeesUseCase.invoke(query).fold(
+            searchEmployeesUseCase.invoke(5, query = query).fold(
                 onSuccess = {data ->
                     _uiState.emit(EmployeeSearchState.Content(data))
                 },

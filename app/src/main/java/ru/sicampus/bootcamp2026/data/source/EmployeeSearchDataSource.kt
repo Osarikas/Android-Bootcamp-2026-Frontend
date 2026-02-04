@@ -20,10 +20,6 @@ class EmployeeSearchDataSource {
                     parameter("search", query)
                 }
             }
-            if (result.status == HttpStatusCode.Unauthorized) {
-                AuthLocalDataSource.clearToken()
-                error("Unauthorized: Token cleared")
-            }
             if (result.status != HttpStatusCode.OK){
                 error("Status: ${result.status}")
             }

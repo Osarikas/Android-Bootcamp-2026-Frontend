@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.meetings.search
+package ru.sicampus.bootcamp2026.ui.screen.meetings
 
 import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
 

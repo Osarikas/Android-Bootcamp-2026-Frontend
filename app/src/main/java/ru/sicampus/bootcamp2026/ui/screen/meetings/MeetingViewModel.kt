@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.meetings.search
+package ru.sicampus.bootcamp2026.ui.screen.meetings
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
@@ -15,11 +15,12 @@ import ru.sicampus.bootcamp2026.data.EmployeeRepository
 import ru.sicampus.bootcamp2026.data.source.EmployeeSearchDataSource
 import ru.sicampus.bootcamp2026.domain.SearchEmployeesUseCase
 
-class EmployeeSearchViewModel : ViewModel() {
+class MeetingViewModel : ViewModel() {
     private val searchEmployeesUseCase = SearchEmployeesUseCase(
         employeeRepository = EmployeeRepository(EmployeeSearchDataSource())
     )
-    private val _uiState : MutableStateFlow<EmployeeSearchState> = MutableStateFlow(EmployeeSearchState.Loading)
+    private val _uiState : MutableStateFlow<EmployeeSearchState> =
+        MutableStateFlow(EmployeeSearchState.Loading)
     val uiState = _uiState.asStateFlow()
 
     val searchState = TextFieldState()

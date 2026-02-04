@@ -19,7 +19,7 @@ data class EmployeeRequestDTO(
     @SerialName("password")
     val password: String,
 )
-fun RegisterFields.toRequest(): EmployeeRequestDTO {
+fun RegisterFields.toDTO(): EmployeeRequestDTO {
     return EmployeeRequestDTO(
         name = this.name,
         position = this.position,

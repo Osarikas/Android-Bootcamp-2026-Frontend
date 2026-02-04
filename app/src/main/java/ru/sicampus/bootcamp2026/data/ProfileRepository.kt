@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.data
 
+import ru.sicampus.bootcamp2026.data.dto.toDTO
 import ru.sicampus.bootcamp2026.data.source.ProfileDataSource
 import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
 
@@ -17,5 +18,8 @@ class ProfileRepository(
                 photoUrl = dto.photoUrl
             )
         }
+    }
+    suspend fun editProfile(employeeEntity: EmployeeEntity): Result<Unit>{
+        return profileDataSource.editProfile(employeeEntity.toDTO())
     }
 }

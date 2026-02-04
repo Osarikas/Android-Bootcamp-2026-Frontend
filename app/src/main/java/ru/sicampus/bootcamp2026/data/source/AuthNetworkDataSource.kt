@@ -6,6 +6,7 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sicampus.bootcamp2026.data.Network
+import ru.sicampus.bootcamp2026.data.dto.EmployeeProfileRequestDTO
 import ru.sicampus.bootcamp2026.data.dto.EmployeeRequestDTO
 import ru.sicampus.bootcamp2026.data.source.util.addAuthHeader
 
@@ -18,10 +19,10 @@ class AuthNetworkDataSource {
             result.status == HttpStatusCode.OK
         }
     }
-    suspend fun register(employeeRequestDTO: EmployeeRequestDTO): Result<Unit> = withContext(Dispatchers.IO) {
+    suspend fun register(employeeProfileRequestDTO: EmployeeProfileRequestDTO): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
             val result = Network.client.post("${Network.HOST}/api/employee/register"){
-                setBody(employeeRequestDTO)
+                setBody(employeeProfileRequestDTO)
             }
             if (result.status.value != 200) {
                 error("Error: ${result.status.value}")

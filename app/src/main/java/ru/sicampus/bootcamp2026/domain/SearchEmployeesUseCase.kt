@@ -7,10 +7,20 @@ class SearchEmployeesUseCase(
     private val employeeRepository: EmployeeRepository
 ){
     private val nameRegex = Regex("^[a-zA-Zа-яА-ЯёЁ\\s]*$")
-    suspend operator fun invoke(query: String?): Result<List<EmployeeEntity>>{
+    suspend operator fun invoke(
+        page: Int,
+        query: String?
+    ): Result<List<EmployeeEntity>>{
         if (!query.isNullOrBlank() && !nameRegex.matches(query)) {
             return Result.failure(IllegalArgumentException("Строка содержит недопустимые символы"))
         }
-        return employeeRepository.searchEmployees(query)
+        return employeeRepository.searchEmployees(
+            query,
+            page = page,
+            size = COUNT
+        )
+    }
+    private companion object{
+        const val COUNT = 5 //replace on 20
     }
 }

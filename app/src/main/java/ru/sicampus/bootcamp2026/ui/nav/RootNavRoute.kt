@@ -6,13 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.sicampus.bootcamp2026.domain.auth.AuthState
-import ru.sicampus.bootcamp2026.ui.LoginViewModelFactory
 import ru.sicampus.bootcamp2026.ui.MainScreen
-import ru.sicampus.bootcamp2026.ui.screen.login.LoginScreen
-import ru.sicampus.bootcamp2026.ui.screen.login.LoginViewModel
+import ru.sicampus.bootcamp2026.ui.screen.auth.login.LoginScreen
+import ru.sicampus.bootcamp2026.ui.screen.auth.register.RegisterScreen
 
 @Composable
 fun NavigationGraph(
@@ -29,10 +29,20 @@ fun NavigationGraph(
                 CircularProgressIndicator()
             }
             is AuthState.Unauthorized -> {
-                val loginViewModel: LoginViewModel = viewModel(
-                    factory = LoginViewModelFactory()
-                )
-                LoginScreen(viewModel = loginViewModel, navController = rootNavController)
+                NavHost(
+                    navController = rootNavController,
+                    startDestination = AppRoute.LoginRoute // Начинаем с логина
+                ) {
+                    composable<AppRoute.LoginRoute> {
+                        LoginScreen(
+                            onNavigateToRegister = { rootNavController.navigate(AppRoute.RegisterRoute) },
+                            navController = rootNavController
+                        )
+                    }
+                    composable<AppRoute.RegisterRoute> {
+                        RegisterScreen(navController = rootNavController)
+                    }
+                }
             }
             is AuthState.Authorized -> {
                 MainScreen(

@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.login
+package ru.sicampus.bootcamp2026.ui.screen.auth.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,6 +39,7 @@ import androidx.navigation.NavController
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel(),
     navController: NavController,
+    onNavigateToRegister: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -63,7 +65,7 @@ fun LoginScreen(
             textAlign = TextAlign.Center
         )
         when (val currentState = state) {
-            is LoginState.Data -> Content(viewModel, currentState)
+            is LoginState.Data -> Content(viewModel, currentState, onNavigateToRegister)
             is LoginState.Loading -> {
                 CircularProgressIndicator(
                     modifier = Modifier.size(64.dp)
@@ -76,7 +78,8 @@ fun LoginScreen(
 @Composable
 private fun Content(
     viewModel: LoginViewModel,
-    state: LoginState.Data
+    state: LoginState.Data,
+    onNavigateToRegister: () -> Unit
 ) {
     var inputLogin by remember { mutableStateOf("") }
     var inputPassword by remember { mutableStateOf("") }
@@ -121,21 +124,31 @@ private fun Content(
         label = { Text("Пароль") }
     )
     Spacer(modifier = Modifier.size(16.dp))
-    Button(
+    Column(
         modifier = Modifier.fillMaxWidth(),
-        onClick = {
-            viewModel.onIntent(LoginIntent.Send(inputLogin, inputPassword))
-        },
-        enabled = state.isEnabledSend
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Войти")
+        TextButton(onClick = onNavigateToRegister) {
+            Text("Нет аккаунта? Зарегистрироваться")
+        }
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                viewModel.onIntent(LoginIntent.Send(inputLogin, inputPassword))
+            },
+            enabled = state.isEnabledSend
+        ) {
+            Text("Войти")
+        }
+
+        if (state.error != null) {
+            Text(
+                modifier = Modifier,
+                text = state.error,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Red,
+            )
+        }
     }
-    if (state.error != null) {
-        Text(
-            modifier = Modifier,
-            text = state.error,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Red,
-        )
-    }
+
 }

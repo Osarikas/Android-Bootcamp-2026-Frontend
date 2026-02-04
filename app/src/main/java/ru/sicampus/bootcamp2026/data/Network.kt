@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.data.source
+package ru.sicampus.bootcamp2026.data
 
 import android.util.Log
 import io.ktor.client.HttpClient
@@ -16,25 +16,25 @@ object Network {
     const val HOST = "https://bootcamp-back.indx0.ru"
     val client by lazy{
         HttpClient(CIO) {
-        install(ContentNegotiation){
-            json(
-                Json{
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                }
-            )
-        }
-        install(Logging){
-            logger = object : Logger {
-                override fun log(message: String){
-                    Log.d("KTOR", message)
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        isLenient = true
+                        ignoreUnknownKeys = true
+                    }
+                )
+            }
+            install(Logging) {
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        Log.d("KTOR", message)
+                    }
                 }
             }
-        }
-        defaultRequest{
-            contentType(ContentType.Application.Json)
-        }
+            defaultRequest {
+                contentType(ContentType.Application.Json)
+            }
 
-    }
+        }
 }
 }

@@ -7,7 +7,9 @@ import io.ktor.client.request.parameter
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.sicampus.bootcamp2026.data.Network
 import ru.sicampus.bootcamp2026.data.dto.EmployeeDTO
+import ru.sicampus.bootcamp2026.data.source.util.addAuthHeader
 
 class EmployeeSearchDataSource {
     suspend fun searchEmployees(query: String?): Result<List<EmployeeDTO>> = withContext(Dispatchers.IO){

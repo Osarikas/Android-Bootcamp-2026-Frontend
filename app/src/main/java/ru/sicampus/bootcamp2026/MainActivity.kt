@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.sicampus.bootcamp2026.data.AuthRepository
 import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
-import ru.sicampus.bootcamp2026.data.source.LoginNetworkDataSource
+import ru.sicampus.bootcamp2026.data.source.AuthNetworkDataSource
 import ru.sicampus.bootcamp2026.domain.auth.GetAuthStatusUseCase
 import ru.sicampus.bootcamp2026.ui.nav.AuthViewModel
 import ru.sicampus.bootcamp2026.ui.nav.AuthViewModelFactory
@@ -21,7 +21,7 @@ import ru.sicampus.bootcamp2026.ui.theme.AndroidBootcamp2026FrontendTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val authRepository = AuthRepository(LoginNetworkDataSource(), AuthLocalDataSource)
+        val authRepository = AuthRepository(AuthNetworkDataSource(), AuthLocalDataSource)
         val getAuthStatusUseCase = GetAuthStatusUseCase(authRepository)
         enableEdgeToEdge()
         setContent {

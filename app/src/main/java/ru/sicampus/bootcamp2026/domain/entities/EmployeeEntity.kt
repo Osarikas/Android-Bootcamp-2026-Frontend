@@ -6,5 +6,5 @@ class EmployeeEntity(
     val username: String,
     val email: String,
     val phoneNumber: String,
-    val photoUrl: String,
+    val photoUrl: String?,
 )

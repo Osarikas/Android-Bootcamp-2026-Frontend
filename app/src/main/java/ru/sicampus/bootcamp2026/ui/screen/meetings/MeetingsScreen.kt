@@ -138,7 +138,7 @@ private fun ListContentState(
                         .padding(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    val photoUrl: String = if(user.photoUrl == ""){
+                    val photoUrl: String = if(user.photoUrl == null){
                         "https://i.ibb.co/23xhLxL9/photo-2026-01-04-21-57-33.jpg"
                     } else{
                         Log.d("KTOR", user.photoUrl)

@@ -31,7 +31,7 @@ fun NavigationGraph(
             is AuthState.Unauthorized -> {
                 NavHost(
                     navController = rootNavController,
-                    startDestination = AppRoute.LoginRoute // Начинаем с логина
+                    startDestination = AppRoute.LoginRoute
                 ) {
                     composable<AppRoute.LoginRoute> {
                         LoginScreen(
@@ -45,10 +45,7 @@ fun NavigationGraph(
                 }
             }
             is AuthState.Authorized -> {
-                MainScreen(
-                    rootNavController = rootNavController,
-                    authViewModel = authViewModel
-                )
+                MainScreen()
             }
         }
     }

@@ -17,7 +17,7 @@ class EmployeeRepository(
                     phoneNumber = employeeDTO.phoneNumber ?: return@mapNotNull null,
                     photoUrl = employeeDTO.photoUrl ?: ""
                 )
-            }
+            } as List<EmployeeEntity>
 
         }
     }

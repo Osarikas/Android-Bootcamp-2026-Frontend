@@ -19,10 +19,10 @@ class AuthNetworkDataSource {
             result.status == HttpStatusCode.OK
         }
     }
-    suspend fun register(employeeProfileRequestDTO: EmployeeProfileRequestDTO): Result<Unit> = withContext(Dispatchers.IO) {
+    suspend fun register(employeeRequestDTO: EmployeeRequestDTO): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
             val result = Network.client.post("${Network.HOST}/api/employee/register"){
-                setBody(employeeProfileRequestDTO)
+                setBody(employeeRequestDTO)
             }
             if (result.status.value != 200) {
                 error("Error: ${result.status.value}")

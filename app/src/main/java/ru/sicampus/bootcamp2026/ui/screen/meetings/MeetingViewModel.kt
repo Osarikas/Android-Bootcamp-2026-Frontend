@@ -16,9 +16,11 @@ import ru.sicampus.bootcamp2026.data.source.EmployeeSearchDataSource
 import ru.sicampus.bootcamp2026.domain.SearchEmployeesUseCase
 
 class MeetingViewModel : ViewModel() {
-    private val searchEmployeesUseCase = SearchEmployeesUseCase(
-        employeeRepository = EmployeeRepository(EmployeeSearchDataSource())
-    )
+    private val searchEmployeesUseCase by lazy{
+        SearchEmployeesUseCase(
+            employeeRepository = EmployeeRepository(EmployeeSearchDataSource())
+        )
+    }
     private val _uiState : MutableStateFlow<EmployeeSearchState> =
         MutableStateFlow(EmployeeSearchState.Loading)
     val uiState = _uiState.asStateFlow()

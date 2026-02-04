@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.data.source
 
 import io.ktor.client.call.body
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,16 @@ class ProfileDataSource {
                 error("Error: $HttpStatusCode")
             }
             result.body()
+        }
+    }
+    suspend fun editProfile(): Result<Unit> = withContext(Dispatchers.IO) {
+        runCatching {
+            val result = Network.client.patch("${Network.HOST}/api/employee"){
+                addAuthHeader()
+            }
+            if(result.status != HttpStatusCode.OK){
+                error("Error: $HttpStatusCode")
+            }
         }
     }
 }

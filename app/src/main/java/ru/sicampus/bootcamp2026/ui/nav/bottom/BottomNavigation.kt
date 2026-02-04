@@ -34,7 +34,7 @@ import ru.sicampus.bootcamp2026.ui.theme.Black
 import ru.sicampus.bootcamp2026.ui.theme.White
 
 @Composable
-fun BottomNavigation(
+fun BottomNavigation (
     navController: NavController
 ) {
     val listItems = listOf(
@@ -42,41 +42,37 @@ fun BottomNavigation(
         BottomNavigationItem.ScreenMeetings,
         BottomNavigationItem.ScreenProfile
     )
-
     Box(
-        modifier = Modifier
+        modifier =  Modifier
             .fillMaxWidth()
             .height(128.dp)
             .background(brush = BgGradient)
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = 40.dp, vertical = 16.dp)
+                .padding(40.dp, 16.dp, 40.dp, 24.dp)
                 .clip(RoundedCornerShape(24.dp))
                 .background(color = Black)
         ) {
             val backStackEntry by navController.currentBackStackEntryAsState()
-
+            // val currentRoute = backStackEntry?.destination?.route
             Row(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                listItems.forEach { item ->
-                    val isSelected = backStackEntry?.destination?.hasRoute(item.route::class) ?: false
-
+                listItems.forEach {
                     BottomNavigationButton(
-                        item = item,
-                        isSelected = isSelected,
+                        it = it,
+                        isSelected = backStackEntry?.destination?.hasRoute(it.route::class) ?: false,
                         onSelected = {
-                            navController.navigate(item.route) {
+                            navController.navigate(it.route) {
+                                launchSingleTop = true
+                                restoreState = true
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
                             }
                         }
                     )
@@ -88,40 +84,42 @@ fun BottomNavigation(
 
 @Composable
 fun BottomNavigationButton(
-    item: BottomNavigationItem,
+    it: BottomNavigationItem,
     isSelected: Boolean,
     onSelected: () -> Unit
 ) {
+
     val contentColor = if (isSelected) Black else White
 
     Box(
         modifier = Modifier
             .size(72.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .clickable(onClick = onSelected),
+            .clickable(
+                onClick = onSelected,
+            ),
         contentAlignment = Alignment.Center
     ) {
         if (isSelected) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .clip(RoundedCornerShape(20.dp))
                     .background(White)
             )
         }
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             Icon(
-                imageVector = ImageVector.vectorResource(item.iconId),
-                contentDescription = item.title,
+                imageVector = ImageVector.vectorResource(it.iconId),
+                it.title,
                 tint = contentColor,
                 modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = item.title,
+                text = it.title,
                 fontSize = 10.sp,
                 color = contentColor,
                 textAlign = TextAlign.Center,

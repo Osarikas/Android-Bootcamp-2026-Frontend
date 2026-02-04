@@ -15,8 +15,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.ui.nav.AppRoute
 import ru.sicampus.bootcamp2026.ui.theme.Black
 import ru.sicampus.bootcamp2026.ui.theme.White
 
@@ -25,13 +27,14 @@ fun FloatingActionButton (
     navController: NavController
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination?.route
+    // val currentRoute = backStackEntry?.destination?.route
+    val isProfileRoute = backStackEntry?.destination?.hasRoute(AppRoute.ProfileRoute::class) ?: false
 
     val iconId: Int
     val iconContentDescription: String
     val action: () -> Unit
 
-    if (currentRoute == "screen_profile") {
+    if (isProfileRoute) {
         iconId = R.drawable.ic_edit
         iconContentDescription = "Изменить"
         action = {}

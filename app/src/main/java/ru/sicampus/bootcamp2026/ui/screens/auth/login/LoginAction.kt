@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.auth.login
+package ru.sicampus.bootcamp2026.ui.screens.auth.login
 
 import ru.sicampus.bootcamp2026.ui.nav.AppRoute
 

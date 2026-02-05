@@ -2,7 +2,7 @@ package ru.sicampus.bootcamp2026.data.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import ru.sicampus.bootcamp2026.ui.screen.auth.register.RegisterFields
+import ru.sicampus.bootcamp2026.ui.screens.auth.register.RegisterFields
 
 @Serializable
 data class EmployeeRequestDTO(

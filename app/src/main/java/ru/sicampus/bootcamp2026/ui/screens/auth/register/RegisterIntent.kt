@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.auth.register
+package ru.sicampus.bootcamp2026.ui.screens.auth.register
 
 sealed interface RegisterIntent {
     data class FieldChanged(val fields: RegisterFields) : RegisterIntent

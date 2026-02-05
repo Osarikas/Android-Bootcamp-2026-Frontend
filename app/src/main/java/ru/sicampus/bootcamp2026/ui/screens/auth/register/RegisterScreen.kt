@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.auth.register
+package ru.sicampus.bootcamp2026.ui.screens.auth.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

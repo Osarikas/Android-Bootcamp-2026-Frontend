@@ -1,6 +1,6 @@
 package ru.sicampus.bootcamp2026.domain.auth
 
-import ru.sicampus.bootcamp2026.ui.screen.auth.register.RegisterFields
+import ru.sicampus.bootcamp2026.ui.screens.auth.register.RegisterFields
 
 class ValidateRegistrationDataUseCase {
     operator fun invoke(fields: RegisterFields): ValidationResult {

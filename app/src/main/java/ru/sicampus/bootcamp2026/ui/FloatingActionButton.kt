@@ -45,7 +45,7 @@ fun FloatingActionButton (
         action = {}
     }
 
-    Box (
+    Box(
         modifier = Modifier
             .size(64.dp)
             .clip(CircleShape)

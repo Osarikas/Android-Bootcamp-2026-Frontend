@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.profile
+package ru.sicampus.bootcamp2026.ui.screens.profile
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

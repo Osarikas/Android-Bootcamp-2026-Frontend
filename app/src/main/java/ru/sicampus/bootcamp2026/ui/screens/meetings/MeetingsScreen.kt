@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.meetings.search
+package ru.sicampus.bootcamp2026.ui.screens.meetings.search
 
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.FlowPreview
-import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeSearchState
-import ru.sicampus.bootcamp2026.ui.screen.meetings.MeetingViewModel
+import ru.sicampus.bootcamp2026.ui.screens.meetings.EmployeeSearchState
+import ru.sicampus.bootcamp2026.ui.screens.meetings.MeetingViewModel
 
 @OptIn(FlowPreview::class)
 @Composable

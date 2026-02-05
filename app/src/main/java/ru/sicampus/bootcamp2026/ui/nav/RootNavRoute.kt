@@ -14,8 +14,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.sicampus.bootcamp2026.domain.auth.AuthState
 import ru.sicampus.bootcamp2026.ui.MainScreen
-import ru.sicampus.bootcamp2026.ui.screen.auth.login.LoginScreen
-import ru.sicampus.bootcamp2026.ui.screen.auth.register.RegisterScreen
+import ru.sicampus.bootcamp2026.ui.screens.auth.login.LoginScreen
+import ru.sicampus.bootcamp2026.ui.screens.auth.register.RegisterScreen
 
 @Composable
 fun NavigationGraph(

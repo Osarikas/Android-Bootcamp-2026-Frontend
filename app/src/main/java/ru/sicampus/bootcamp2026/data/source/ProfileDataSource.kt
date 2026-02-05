@@ -10,28 +10,26 @@ import kotlinx.coroutines.withContext
 import ru.sicampus.bootcamp2026.data.Network
 import ru.sicampus.bootcamp2026.data.dto.EmployeeDTO
 import ru.sicampus.bootcamp2026.data.dto.UpdateProfileRequestDTO
-import ru.sicampus.bootcamp2026.data.source.util.addAuthHeader
 
 class ProfileDataSource {
+
     suspend fun getProfile(): Result<EmployeeDTO> = withContext(Dispatchers.IO) {
         runCatching {
-            val result = Network.client.post("${Network.HOST}/api/employee/login"){
-                addAuthHeader()
+            val result = Network.client.post("api/employee/login")
+            if (result.status != HttpStatusCode.OK) {
+                error("Error: ${result.status}")
             }
-            if(result.status != HttpStatusCode.OK){
-                error("Error: $HttpStatusCode")
-            }
-            result.body()
+            result.body<EmployeeDTO>()
         }
     }
+
     suspend fun editProfile(updateProfileRequestDTO: UpdateProfileRequestDTO): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
-            val result = Network.client.patch("${Network.HOST}/api/employee"){
-                addAuthHeader()
+            val result = Network.client.patch("api/employee") {
                 setBody(updateProfileRequestDTO)
             }
-            if(result.status != HttpStatusCode.OK){
-                error("Error: $HttpStatusCode")
+            if (result.status != HttpStatusCode.OK) {
+                error("Error: ${result.status}")
             }
         }
     }

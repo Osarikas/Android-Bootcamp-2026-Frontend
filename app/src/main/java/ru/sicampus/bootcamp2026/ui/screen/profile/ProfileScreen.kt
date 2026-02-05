@@ -60,7 +60,7 @@ fun Profile(
                     onSave = { viewmodel.onIntent(ProfileIntent.Save(it)) }
                 )
             } else {
-                ProfileViewMode(state = state)
+                ProfileViewMode(state = state, onRefresh = { viewmodel.onIntent(ProfileIntent.Load) })
             }
         }
     }
@@ -68,17 +68,24 @@ fun Profile(
 
 
 @Composable
-fun ProfileViewMode(state: ProfileState) {
+fun ProfileViewMode(state: ProfileState,
+                    onRefresh : () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+
     ) {
         when (state) {
             is ProfileState.Loading -> CircularProgressIndicator()
-            is ProfileState.Error -> Text(state.reason, color = Color.Red)
+            is ProfileState.Error -> {
+                Text(state.reason, color = Color.Red)
+                TextButton(onClick = {onRefresh() }) {
+                    Text("Refresh")
+                }
+            }
             is ProfileState.Content -> {
                 val user = state.user
 
@@ -184,7 +191,12 @@ fun ProfileEditMode(
                 }
             }
         }
-        is ProfileState.Error -> Text(state.reason, color = Color.Red)
+        is ProfileState.Error -> {
+            Text(state.reason, color = Color.Red)
+            TextButton(onClick = { onCancel() }) {
+                Text("Назад")
+            }
+        }
         is ProfileState.Loading -> CircularProgressIndicator()
     }
 }

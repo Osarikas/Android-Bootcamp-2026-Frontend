@@ -88,10 +88,14 @@ class ProfileViewModel : ViewModel() {
     }
     fun onIntent(intent: ProfileIntent){
         when(intent){
-            is ProfileIntent.Cancel -> setEditMode(false)
+            is ProfileIntent.Cancel -> {
+                setEditMode(false)
+                getEmployeeData()
+            }
             is ProfileIntent.Logout -> logout()
             is ProfileIntent.Save -> updateProfile(intent.updatedEmployee)
             is ProfileIntent.SetEditMode -> setEditMode(true)
+            is ProfileIntent.Load -> getEmployeeData()
         }
     }
 

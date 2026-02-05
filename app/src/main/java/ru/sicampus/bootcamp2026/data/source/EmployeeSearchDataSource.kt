@@ -8,20 +8,23 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sicampus.bootcamp2026.data.Network
-import ru.sicampus.bootcamp2026.data.dto.EmployeeDTO
 import ru.sicampus.bootcamp2026.data.dto.PagingEmployeeListDTO
 import ru.sicampus.bootcamp2026.data.source.util.addAuthHeader
 
 class EmployeeSearchDataSource {
     suspend fun searchEmployees(query: String?, page: Int, size: Int): Result<PagingEmployeeListDTO> = withContext(Dispatchers.IO){
         runCatching {
-            val result = Network.client.get("${Network.HOST}/api/employee/all"){
-                addAuthHeader()
-                if (!query.isNullOrBlank()) {
-                    parameter("search", query)
+            val result = Network.client.get("${Network.HOST}/api/employee/all-paginated"){
+                url{
+                    if (!query.isNullOrBlank()) {
+                        parameter("search", query)
+
+                    }
                     parameter("page", page)
                     parameter("size", size)
                 }
+                addAuthHeader()
+
             }
             if (result.status != HttpStatusCode.OK){
                 error("Status: ${result.status}")

@@ -50,6 +50,9 @@ fun MeetingsScreen(
 ) {
     val state by viewmodel.uiState.collectAsState()
     var selectedUserName by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(Unit) {
+        viewmodel.onIntent(EmployeeListIntent.Refresh)
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -128,6 +131,7 @@ private fun ListContentState(
     LaunchedEffect(isNeededLoadMore, state.isLastPage) {
         if(isNeededLoadMore && !state.isLastPage) onLoadMore.invoke()
     }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

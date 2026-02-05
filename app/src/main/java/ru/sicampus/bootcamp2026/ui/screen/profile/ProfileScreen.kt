@@ -3,6 +3,7 @@ package ru.sicampus.bootcamp2026.ui.screen.profile
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +20,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,56 +30,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.domain.entities.ProfileUpdateEntity
-import ru.sicampus.bootcamp2026.ui.FABViewModel
 
 @Composable
 fun Profile(
-    viewmodel: ProfileViewModel = viewModel()
+    viewmodel: ProfileViewModel = viewModel(LocalActivity.current as ComponentActivity)
 ) {
     val state by viewmodel.uiState.collectAsState()
     val isEditMode by viewmodel.isEditMode.collectAsState()
-    val activity = LocalActivity.current as? ComponentActivity
-    val fabVm = if (activity != null) viewModel<FABViewModel>(activity) else viewModel()
 
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-        TextButton(onClick = { viewmodel.onIntent(ProfileIntent.Logout) }) {
-            Text("Logout", color = Color.Red)
-        }
-    }
-    LaunchedEffect(isEditMode, state) {
-        if (isEditMode || state !is ProfileState.Content) {
-            fabVm.setConfig(null)
-        } else {
-            fabVm.setConfig(R.drawable.ic_edit) {
-                viewmodel.onIntent(ProfileIntent.SetEditMode)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                TextButton(onClick = { viewmodel.onIntent(ProfileIntent.Logout) }) {
+                    Text("Logout", color = Color.Red)
+                }
+            }
+
+            if (isEditMode) {
+                ProfileEditMode(
+                    state = state,
+                    onCancel = { viewmodel.onIntent(ProfileIntent.Cancel) },
+                    onSave = { viewmodel.onIntent(ProfileIntent.Save(it)) }
+                )
+            } else {
+                ProfileViewMode(state = state)
             }
         }
     }
-
-    if (isEditMode) {
-        ProfileEditMode(
-            state, onCancel = { viewmodel.onIntent(ProfileIntent.Cancel) },
-            onSave = {data ->
-                viewmodel.onIntent(ProfileIntent.Save(data))
-            }
-        )
-    } else {
-        ProfileViewMode(state)
-    }
-
 }
 
 
 @Composable
-fun ProfileViewMode(state : ProfileState) {
+fun ProfileViewMode(state: ProfileState) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -92,15 +85,18 @@ fun ProfileViewMode(state : ProfileState) {
                 AsyncImage(
                     model = user.photoUrl,
                     contentDescription = null,
-                    modifier = Modifier.size(100.dp).clip(CircleShape),
-                    placeholder = ColorPainter(Color.LightGray)
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape),
+                    placeholder = ColorPainter(Color.LightGray),
+                    error = painterResource(R.drawable.ic_profile)
                 )
                 Text(user.name, style = MaterialTheme.typography.headlineMedium)
                 Text(user.position, style = MaterialTheme.typography.bodyLarge, color = Color.Gray)
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text("Username: ${user.username}")
                     Text("Email: ${user.email}")
                     Text("Phone: ${user.phoneNumber}")
@@ -116,7 +112,7 @@ fun ProfileEditMode(
     onCancel: () -> Unit,
     onSave: (ProfileUpdateEntity) -> Unit
 ) {
-    when(state){
+    when (state) {
         is ProfileState.Content -> {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -130,55 +126,39 @@ fun ProfileEditMode(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = inputName,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    ),
-                    onValueChange = {
-                        inputName = it
-                    },
-                    label = { Text("ФИО") }
+                    onValueChange = { inputName = it },
+                    label = { Text("ФИО") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                 )
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = inputPosition,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    ),
-                    onValueChange = {
-                        inputPosition = it
-                    },
-                    label = { Text("Должность") }
+                    onValueChange = { inputPosition = it },
+                    label = { Text("Должность") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                 )
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = inputEmail,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email
-                    ),
-                    onValueChange = {
-                        inputEmail = it
-                    },
-                    label = { Text("Почта") }
+                    onValueChange = { inputEmail = it },
+                    label = { Text("Почта") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                 )
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = inputPhone,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    ),
-                    onValueChange = {
-                        inputPhone = it
-                    },
-                    label = { Text("Телефон") }
+                    onValueChange = { inputPhone = it },
+                    label = { Text("Телефон") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                 )
-
 
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Button(
                         modifier = Modifier.fillMaxWidth(),
@@ -190,17 +170,14 @@ fun ProfileEditMode(
                                 phoneNumber = inputPhone
                             )
                             onSave(updateData)
-                        },
-                        enabled = true
+                        }
                     ) {
                         Text("Сохранить")
                     }
 
-                    Button(
+                    TextButton(
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            onCancel()
-                        }
+                        onClick = onCancel
                     ) {
                         Text("Отмена")
                     }
@@ -208,15 +185,6 @@ fun ProfileEditMode(
             }
         }
         is ProfileState.Error -> Text(state.reason, color = Color.Red)
-        ProfileState.Loading -> CircularProgressIndicator()
+        is ProfileState.Loading -> CircularProgressIndicator()
     }
-
-
-
-
 }
-
-
-
-// Временное поле выбора изображения ->
-

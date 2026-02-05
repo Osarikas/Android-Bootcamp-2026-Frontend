@@ -121,7 +121,7 @@ private fun ListContentState(
         derivedStateOf {
             val lastVisibleItem = lazyColumnListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: Int.MIN_VALUE
             val totalItems = lazyColumnListState.layoutInfo.totalItemsCount
-            lastVisibleItem >= totalItems - 5
+            lastVisibleItem >= totalItems - 20
         }
     }
 

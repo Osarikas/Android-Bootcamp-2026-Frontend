@@ -6,7 +6,6 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sicampus.bootcamp2026.data.Network
-import ru.sicampus.bootcamp2026.data.dto.EmployeeProfileRequestDTO
 import ru.sicampus.bootcamp2026.data.dto.EmployeeRequestDTO
 import ru.sicampus.bootcamp2026.data.source.util.addAuthHeader
 

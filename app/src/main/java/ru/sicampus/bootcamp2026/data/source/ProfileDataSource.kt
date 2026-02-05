@@ -9,9 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.sicampus.bootcamp2026.data.Network
 import ru.sicampus.bootcamp2026.data.dto.EmployeeDTO
-import ru.sicampus.bootcamp2026.data.dto.EmployeeProfileRequestDTO
+import ru.sicampus.bootcamp2026.data.dto.UpdateProfileRequestDTO
 import ru.sicampus.bootcamp2026.data.source.util.addAuthHeader
-import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
 
 class ProfileDataSource {
     suspend fun getProfile(): Result<EmployeeDTO> = withContext(Dispatchers.IO) {
@@ -25,11 +24,11 @@ class ProfileDataSource {
             result.body()
         }
     }
-    suspend fun editProfile(employeeProfileRequestDTO: EmployeeProfileRequestDTO): Result<Unit> = withContext(Dispatchers.IO) {
+    suspend fun editProfile(updateProfileRequestDTO: UpdateProfileRequestDTO): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
             val result = Network.client.patch("${Network.HOST}/api/employee"){
                 addAuthHeader()
-                setBody(employeeProfileRequestDTO)
+                setBody(updateProfileRequestDTO)
             }
             if(result.status != HttpStatusCode.OK){
                 error("Error: $HttpStatusCode")

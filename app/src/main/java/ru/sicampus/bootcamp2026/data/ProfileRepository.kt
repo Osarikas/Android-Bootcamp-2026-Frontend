@@ -3,6 +3,7 @@ package ru.sicampus.bootcamp2026.data
 import ru.sicampus.bootcamp2026.data.dto.toDTO
 import ru.sicampus.bootcamp2026.data.source.ProfileDataSource
 import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
+import ru.sicampus.bootcamp2026.domain.entities.ProfileUpdateEntity
 
 class ProfileRepository(
         private val profileDataSource: ProfileDataSource
@@ -19,7 +20,7 @@ class ProfileRepository(
             )
         }
     }
-    suspend fun editProfile(employeeEntity: EmployeeEntity): Result<Unit>{
-        return profileDataSource.editProfile(employeeEntity.toDTO())
+    suspend fun editProfile(profileUpdateEntity: ProfileUpdateEntity): Result<Unit>{
+        return profileDataSource.editProfile(profileUpdateEntity.toDTO())
     }
 }

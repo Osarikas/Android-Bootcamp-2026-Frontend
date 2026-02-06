@@ -6,13 +6,16 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.header
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
 
@@ -21,7 +24,6 @@ object Network {
 
     val client by lazy {
         HttpClient(CIO) {
-            // Чтобы валидатор перехватывал ошибки до того, как Ktor выбросит Exception
             expectSuccess = false
 
             install(ContentNegotiation) {
@@ -35,7 +37,6 @@ object Network {
                 logger = object : Logger {
                     override fun log(message: String) { Log.d("KTOR", message) }
                 }
-                level = LogLevel.ALL
             }
 
             HttpResponseValidator {
@@ -48,7 +49,17 @@ object Network {
             }
 
             defaultRequest {
+                url(HOST)
                 contentType(ContentType.Application.Json)
+
+                runBlocking {
+                    val token = AuthLocalDataSource.getToken().firstOrNull()
+                    if (!token.isNullOrBlank()) {
+                        if (token.isNotBlank()) {
+                            header(HttpHeaders.Authorization, " $token")
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screens.auth.register
+package ru.sicampus.bootcamp2026.ui.screen.auth.register
 
 sealed interface RegisterState {
     data object Loading : RegisterState

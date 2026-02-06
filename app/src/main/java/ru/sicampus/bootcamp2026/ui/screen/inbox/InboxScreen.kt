@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screens.inbox
+package ru.sicampus.bootcamp2026.ui.screen.inbox
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

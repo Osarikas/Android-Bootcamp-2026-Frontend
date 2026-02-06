@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screens.profile
+package ru.sicampus.bootcamp2026.ui.screen.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

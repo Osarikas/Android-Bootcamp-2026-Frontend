@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screens.auth.register
+package ru.sicampus.bootcamp2026.ui.screen.auth.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

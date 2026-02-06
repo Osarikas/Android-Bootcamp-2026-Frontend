@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screens.auth.login
+package ru.sicampus.bootcamp2026.ui.screen.auth.login
 
 sealed interface LoginState {
     object Loading: LoginState

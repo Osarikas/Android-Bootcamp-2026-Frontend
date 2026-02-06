@@ -15,9 +15,19 @@ val Pink40 = Color(0xFF7D5260)
 val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
 
-val BgGradient = Brush.verticalGradient(
+val PrimaryGray = Color(0xFF7F7F7F)
+val SecondaryGray = Color(0xFFF5F5F5)
+
+val BgGradientBottom = Brush.verticalGradient(
     colors = listOf(
         Color.White.copy(alpha = 0f),
         Color.White
+    )
+)
+
+val BgGradientTop = Brush.verticalGradient(
+    colors = listOf(
+        Color.White,
+        Color.White.copy(alpha = 0f)
     )
 )

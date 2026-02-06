@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import ru.sicampus.bootcamp2026.ui.theme.BgGradient
+import ru.sicampus.bootcamp2026.ui.theme.BgGradientBottom
 import ru.sicampus.bootcamp2026.ui.theme.Black
 import ru.sicampus.bootcamp2026.ui.theme.White
 
@@ -46,7 +46,7 @@ fun BottomNavigation (
         modifier =  Modifier
             .fillMaxWidth()
             .height(128.dp)
-            .background(brush = BgGradient)
+            .background(brush = BgGradientBottom)
     ) {
         Box(
             modifier = Modifier

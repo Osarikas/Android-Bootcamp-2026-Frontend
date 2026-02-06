@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import ru.sicampus.bootcamp2026.ui.nav.bottom.BottomNavigation
 import ru.sicampus.bootcamp2026.ui.nav.bottom.NavGraph
 
-@Preview
 @Composable
 fun MainScreen() {
     val bottomNavController = rememberNavController()

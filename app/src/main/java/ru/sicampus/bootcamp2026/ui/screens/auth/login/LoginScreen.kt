@@ -1,12 +1,9 @@
 package ru.sicampus.bootcamp2026.ui.screens.auth.login
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -40,25 +36,21 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import ru.sicampus.bootcamp2026.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import ru.sicampus.bootcamp2026.components.AppTopBar
+import ru.sicampus.bootcamp2026.components.AuthFooter
 import ru.sicampus.bootcamp2026.components.InputField
-import ru.sicampus.bootcamp2026.ui.theme.BgGradientBottom
-import ru.sicampus.bootcamp2026.ui.theme.BgGradientTop
 import ru.sicampus.bootcamp2026.ui.theme.Black
-import ru.sicampus.bootcamp2026.ui.theme.PrimaryGray
-import ru.sicampus.bootcamp2026.ui.theme.SecondaryGray
 import ru.sicampus.bootcamp2026.ui.theme.White
 
 @Composable
@@ -106,95 +98,61 @@ fun LoginScreen(
 @Preview
 @Composable
 private fun LoginScreen() {
+    val configuration = LocalConfiguration.current
+    val screenHeightDp = configuration.screenHeightDp.dp
+    val minHeightForIcon = 600.dp
+
     Column (
         modifier = Modifier
             .fillMaxSize()
-            .background(Black),
+            .background(Black)
+            .padding(top = 24.dp),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
 
-        Spacer(modifier = Modifier.weight(1f))
-        Box(
-            modifier = Modifier
-                //.fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_logo),
-                contentDescription = "*Название приложения/компании",
-                Modifier.size(100.dp),
-                tint = White
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(772.dp)
-                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-                .background(White)
-                // .align(Alignment.BottomCenter)
-        ) {
-
-            Column(
+        if (screenHeightDp > minHeightForIcon) {
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(brush = BgGradientTop)
-                    .padding(16.dp)
-                    .zIndex(1f)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) { },
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(bottom = 16.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Box(
-                    Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(64.dp)
-                            .clip(CircleShape)
-                            .background(SecondaryGray)
-                            .clickable(
-                                onClick = { }
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_back),
-                            contentDescription = "Назад",
-                            modifier = Modifier.size(32.dp),
-                            tint = Black
-                        )
-                    }
-                }
-                Text(
-                    text = "Вход",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_logo),
+                    contentDescription = "*Название приложения/компании",
+                    Modifier.size(100.dp),
+                    tint = White
                 )
             }
+        }
 
 
-            var inputLogin by remember { mutableStateOf("") }
-            var inputPassword by remember { mutableStateOf("") }
-            val focusPasswordRequester = remember { FocusRequester() }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                .background(White)
+        ) {
+
+            AppTopBar(
+                title = "Вход",
+                startIconId =  R.drawable.ic_back,
+                startIconButtonOnClick = {}
+            )
+
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
+
+                var inputLogin by remember { mutableStateOf("") }
+                var inputPassword by remember { mutableStateOf("") }
+                val focusPasswordRequester = remember { FocusRequester() }
 
                 Spacer(modifier = Modifier.height(112.dp))
 
@@ -229,59 +187,20 @@ private fun LoginScreen() {
                     ),
                     visualTransformation = PasswordVisualTransformation()
                 )
+
+                Spacer(modifier = Modifier.height(172.dp))
             }
 
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(172.dp)
-                    .background(brush = BgGradientBottom)
-                    .padding(16.dp)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) { }
-                    .align(Alignment.BottomCenter),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Black)
-                        .clickable(
-                            onClick = { }
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Войти",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = White
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
-                    Text(
-                        text = "Нет аккаунта? ",
-                        fontSize = 16.sp,
-                        color = PrimaryGray
-                    )
-                    Text(text = "Создать",
-                        fontSize = 16.sp,
-                        color = Black,
-                        modifier = Modifier.clickable(
-                                onClick = /* onNavigateToRegister */ { }
-                        )
-                    )
-                }
-            }
+            AuthFooter (
+                modifier = Modifier.align(Alignment.BottomCenter),
+                primaryButtonText = "Войти",
+                primaryButtonOnClick = {},
+                buttonEnabled = true,
+                secondaryText1 = "Нет аккаунта? ",
+                secondaryText2 = "Создать",
+                secondaryText2OnClick = { /* onNavigateToRegister */ }
+            )
         }
     }
 }

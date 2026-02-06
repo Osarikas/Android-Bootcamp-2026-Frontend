@@ -36,7 +36,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -105,7 +104,7 @@ private fun Content(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_logo),
-                    contentDescription = "*Название приложения/компании",
+                    contentDescription = null,
                     Modifier.size(100.dp),
                     tint = White
                 )
@@ -171,7 +170,7 @@ private fun Content(
                             viewModel.onIntent(LoginIntent.Send(inputLogin, inputPassword))
                         }
                     ),
-                    visualTransformation = PasswordVisualTransformation()
+                    isPassword = true
                 )
 
                 Spacer(modifier = Modifier.height(172.dp))

@@ -13,15 +13,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,12 +33,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ru.sicampus.bootcamp2026.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -70,34 +66,23 @@ fun LoginScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(all = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Привет! Давай авторизуемся",
-            style = MaterialTheme.typography.headlineSmall,
-            textAlign = TextAlign.Center
-        )
-        when (val currentState = state) {
-            is LoginState.Data -> Content(viewModel, currentState, onNavigateToRegister)
-            is LoginState.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(64.dp)
-                )
-            }
+    when (val currentState = state) {
+        is LoginState.Data -> Content(viewModel, currentState, onNavigateToRegister)
+        is LoginState.Loading -> {
+            CircularProgressIndicator(
+                modifier = Modifier.size(64.dp)
+            )
         }
     }
 }
 
 
-
-@Preview
 @Composable
-private fun LoginScreen() {
+private fun Content(
+    viewModel: LoginViewModel,
+    state: LoginState.Data,
+    onNavigateToRegister: () -> Unit
+) {
     val configuration = LocalConfiguration.current
     val screenHeightDp = configuration.screenHeightDp.dp
     val minHeightForIcon = 600.dp
@@ -142,6 +127,10 @@ private fun LoginScreen() {
             )
 
 
+            var inputLogin by remember { mutableStateOf("") }
+            var inputPassword by remember { mutableStateOf("") }
+            val focusPasswordRequester = remember { FocusRequester() }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -149,11 +138,6 @@ private fun LoginScreen() {
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-
-                var inputLogin by remember { mutableStateOf("") }
-                var inputPassword by remember { mutableStateOf("") }
-                val focusPasswordRequester = remember { FocusRequester() }
-
                 Spacer(modifier = Modifier.height(112.dp))
 
                 InputField(
@@ -161,7 +145,7 @@ private fun LoginScreen() {
                     value = inputLogin,
                     onValueChange = {
                         inputLogin = it
-                        // viewModel.onIntent(LoginIntent.TextInput(inputLogin, inputPassword))
+                        viewModel.onIntent(LoginIntent.TextInput(inputLogin, inputPassword))
                     },
                     placeholderText = "Введите логин",
                     keyboardActions = KeyboardActions(
@@ -176,13 +160,15 @@ private fun LoginScreen() {
                     value = inputPassword,
                     onValueChange = {
                         inputPassword = it
-                        // viewModel.onIntent(LoginIntent.TextInput(inputLogin, inputPassword))
+                        viewModel.onIntent(LoginIntent.TextInput(inputLogin, inputPassword))
                     },
                     placeholderText = "Введите пароль",
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done,
                     modifier = Modifier.focusRequester(focusPasswordRequester).fillMaxWidth(),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            // viewModel.onIntent(LoginIntent.Send(inputLogin, inputPassword))
+                            viewModel.onIntent(LoginIntent.Send(inputLogin, inputPassword))
                         }
                     ),
                     visualTransformation = PasswordVisualTransformation()
@@ -191,98 +177,30 @@ private fun LoginScreen() {
                 Spacer(modifier = Modifier.height(172.dp))
             }
 
-
-            AuthFooter (
+            AuthFooter(
                 modifier = Modifier.align(Alignment.BottomCenter),
                 primaryButtonText = "Войти",
-                primaryButtonOnClick = {},
-                buttonEnabled = true,
+                primaryButtonOnClick = {
+                    viewModel.onIntent(LoginIntent.Send(inputLogin, inputPassword))
+                },
+                buttonEnabled = state.isEnabledSend,
                 secondaryText1 = "Нет аккаунта? ",
                 secondaryText2 = "Создать",
-                secondaryText2OnClick = { /* onNavigateToRegister */ }
+                secondaryText2OnClick = onNavigateToRegister
             )
+
+            if (state.error != null) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    text = state.error,
+                    fontSize = 24.sp,
+                    color = Color.Red,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
-}
-
-
-
-
-
-@Composable
-private fun Content(
-    viewModel: LoginViewModel,
-    state: LoginState.Data,
-    onNavigateToRegister: () -> Unit
-) {
-    var inputLogin by remember { mutableStateOf("") }
-    var inputPassword by remember { mutableStateOf("") }
-    val focusPasswordRequester = remember { FocusRequester() }
-    Spacer(modifier = Modifier.size(16.dp))
-    TextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = inputLogin,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next
-        ),
-        keyboardActions = KeyboardActions(
-            onNext = {
-                focusPasswordRequester.requestFocus()
-            }
-        ),
-        onValueChange = {
-            inputLogin = it
-            viewModel.onIntent(LoginIntent.TextInput(inputLogin, inputPassword))
-        },
-        label = { Text("Логин") }
-    )
-    Spacer(modifier = Modifier.size(16.dp))
-    TextField(
-        modifier = Modifier.focusRequester(focusPasswordRequester).fillMaxWidth(),
-        value = inputPassword,
-        visualTransformation = PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                viewModel.onIntent(LoginIntent.Send(inputLogin, inputPassword))
-            }
-        ),
-        onValueChange = {
-            inputPassword = it
-            viewModel.onIntent(LoginIntent.TextInput(inputLogin, inputPassword))
-        },
-        label = { Text("Пароль") }
-    )
-    Spacer(modifier = Modifier.size(16.dp))
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TextButton(onClick = onNavigateToRegister) {
-            Text("Нет аккаунта? Зарегистрироваться")
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                viewModel.onIntent(LoginIntent.Send(inputLogin, inputPassword))
-            },
-            enabled = state.isEnabledSend
-        ) {
-            Text("Войти")
-        }
-
-        if (state.error != null) {
-            Text(
-                modifier = Modifier,
-                text = state.error,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Red,
-            )
-        }
-    }
-
 }

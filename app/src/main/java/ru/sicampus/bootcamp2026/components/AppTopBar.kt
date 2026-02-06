@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientTop
+import ru.sicampus.bootcamp2026.ui.theme.Black
 
 @Composable
 fun AppTopBar(
@@ -60,6 +61,7 @@ fun AppTopBar(
         Text(
             text = title,
             fontSize = 24.sp,
+            color = Black,
             fontWeight = FontWeight.Medium,
         )
     }

@@ -92,7 +92,8 @@ fun InputField(
                                 Icons.Default.Visibility
                             else
                                 Icons.Default.VisibilityOff,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = PrimaryGray
                         )
                     }
                 }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import ru.sicampus.bootcamp2026.data.EmployeeRepository
+import ru.sicampus.bootcamp2026.data.repository.EmployeeRepository
 import ru.sicampus.bootcamp2026.data.source.EmployeeSearchDataSource
 import ru.sicampus.bootcamp2026.domain.SearchEmployeesUseCase
 import ru.sicampus.bootcamp2026.domain.entities.PagingEmployeeListEntity

@@ -2,7 +2,10 @@ package ru.sicampus.bootcamp2026.ui.screen.inbox
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,7 +28,10 @@ fun InboxScreen(
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
 
     when (val state = state) {
-        is InboxState.Content ->  InboxContentState(state.invitations)
+        is InboxState.Content ->  InboxContentState(
+            state.invitations,
+            onClick = { intent -> viewmodel.onIntent(intent) }
+        )
         is InboxState.Error -> InboxErrorState(
             state.reason
         ) { viewmodel.onIntent(InboxIntent.LoadInvitations) }
@@ -52,26 +59,41 @@ fun InboxErrorState(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "Error: $error", color = androidx.compose.ui.graphics.Color.Red)
+        Text(text = "Error: $error", color = Color.Red)
         Text(text = "Tap to refresh", modifier = Modifier.clickable { onRefresh() })
     }
 }
 @Composable
 fun InboxContentState(
-    invitations: List<InvitationEntity>
+    invitations: List<InvitationEntity>,
+    onClick: (InboxIntent) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         items(invitations) { invitation ->
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxWidth()) {
                 Text(invitation.message)
                 Text(invitation.status)
                 Text(invitation.meeting.name)
                 Text(invitation.meeting.description)
                 Text(invitation.meeting.startTime)
                 Text(invitation.meeting.ownerName)
+                Row {
+                    Text(
+                        text = "Accept",
+                        modifier = Modifier
+                            .clickable {onClick(InboxIntent.AcceptInvitation(invitation.id)) }
+                            .padding(8.dp)
+                    )
+                    Text(
+                        text = "Decline",
+                        modifier = Modifier
+                            .clickable { onClick(InboxIntent.DeclineInvitation(invitation.id)) }
+                            .padding(8.dp)
+                    )
+                }
             }
         }
     }

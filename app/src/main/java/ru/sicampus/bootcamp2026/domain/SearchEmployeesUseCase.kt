@@ -1,6 +1,6 @@
 package ru.sicampus.bootcamp2026.domain
 
-import ru.sicampus.bootcamp2026.data.EmployeeRepository
+import ru.sicampus.bootcamp2026.data.repository.EmployeeRepository
 import ru.sicampus.bootcamp2026.domain.entities.PagingEmployeeListEntity
 
 class SearchEmployeesUseCase(

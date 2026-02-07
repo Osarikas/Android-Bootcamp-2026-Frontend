@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ru.sicampus.bootcamp2026.ui.nav.AppRoute
-import ru.sicampus.bootcamp2026.ui.screen.inbox.Inbox
+import ru.sicampus.bootcamp2026.ui.screen.inbox.InboxScreen
 import ru.sicampus.bootcamp2026.ui.screen.meetings.search.MeetingsScreen
 import ru.sicampus.bootcamp2026.ui.screen.profile.Profile
 
@@ -18,7 +18,7 @@ fun NavGraph(
         startDestination = AppRoute.MeetingsRoute
     ) {
         composable<AppRoute.InboxRoute> {
-            Inbox()
+            InboxScreen()
         }
         composable<AppRoute.MeetingsRoute> {
             MeetingsScreen()

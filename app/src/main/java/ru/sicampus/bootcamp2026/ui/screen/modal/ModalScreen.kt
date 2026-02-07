@@ -40,6 +40,7 @@ fun ModalScreen(
     val scrimAlpha = remember {
         Animatable(0f)
     }
+    val duration = 800
 
     val hide: suspend  () -> Unit = {
         coroutineScope {
@@ -47,14 +48,14 @@ fun ModalScreen(
                 offsetY.animateTo(
                     targetValue = modalHeight.value,
                     animationSpec = tween(
-                        durationMillis = 500
+                        durationMillis = duration
                     )
                 )
             }
             launch {
                 scrimAlpha.animateTo(
                     targetValue = 0f,
-                    animationSpec = tween (500)
+                    animationSpec = tween (duration)
                 )
             }
         }
@@ -66,14 +67,14 @@ fun ModalScreen(
             offsetY.animateTo(
                 targetValue = 0f,
                 animationSpec = tween(
-                    durationMillis = 500
+                    durationMillis = duration
                 )
             )
         }
         launch {
             scrimAlpha.animateTo(
                 targetValue = 0.8f,
-                animationSpec = tween (500)
+                animationSpec = tween (duration)
             )
         }
     }

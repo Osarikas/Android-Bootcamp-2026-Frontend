@@ -1,10 +1,10 @@
 [versions]
 #noinspection AndroidGradlePluginVersion
-agp = "8.13.2"
+agp = "8.1.4"
 coil = "3.3.0"
 datastorePreferences = "1.2.0"
 #noinspection GradleDependency
-kotlin = "2.2.20"
+kotlin = "1.9.10"
 coreKtx = "1.17.0"
 kotlinxCollectionsImmutable = "0.4.0"
 kotlinxSerializationJson = "1.10.0"

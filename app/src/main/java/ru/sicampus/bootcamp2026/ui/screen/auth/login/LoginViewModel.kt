@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
 import ru.sicampus.bootcamp2026.data.source.AuthNetworkDataSource
-import ru.sicampus.bootcamp2026.data.AuthRepository
+import ru.sicampus.bootcamp2026.data.repository.AuthRepository
 import ru.sicampus.bootcamp2026.domain.auth.CheckAndSaveLoginUseCase
 import ru.sicampus.bootcamp2026.domain.auth.CheckAuthFormatUseCase
 import ru.sicampus.bootcamp2026.ui.nav.AppRoute

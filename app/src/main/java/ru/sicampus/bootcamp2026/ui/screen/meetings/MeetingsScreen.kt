@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.meetings.search
+package ru.sicampus.bootcamp2026.ui.screen.meetings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,8 +18,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,9 +38,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.FlowPreview
 import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
-import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeListIntent
-import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeSearchState
-import ru.sicampus.bootcamp2026.ui.screen.meetings.MeetingViewModel
 
 @OptIn(FlowPreview::class)
 @Composable
@@ -178,7 +175,7 @@ private fun ListContentState(
 private fun SearchField(
     searchState: TextFieldState
 ){
-    OutlinedTextField(
+    TextField(
         state = searchState,
         label = { Text("Search") },
         modifier = Modifier

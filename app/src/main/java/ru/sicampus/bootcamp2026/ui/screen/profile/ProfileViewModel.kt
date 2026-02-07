@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.sicampus.bootcamp2026.data.AuthRepository
-import ru.sicampus.bootcamp2026.data.ProfileRepository
+import ru.sicampus.bootcamp2026.data.repository.AuthRepository
+import ru.sicampus.bootcamp2026.data.repository.ProfileRepository
 import ru.sicampus.bootcamp2026.data.source.AuthLocalDataSource
 import ru.sicampus.bootcamp2026.data.source.AuthNetworkDataSource
 import ru.sicampus.bootcamp2026.data.source.ProfileDataSource

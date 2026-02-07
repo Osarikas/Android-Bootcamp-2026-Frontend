@@ -1,4 +1,4 @@
-package ru.sicampus.bootcamp2026.ui.screen.meetings
+package ru.sicampus.bootcamp2026.ui.screen.modal
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,9 +32,9 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.components.AppButton
 import ru.sicampus.bootcamp2026.components.AppTopBar
@@ -43,9 +44,9 @@ import ru.sicampus.bootcamp2026.ui.theme.BgGradientBottom
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientTop
 import ru.sicampus.bootcamp2026.ui.theme.White
 
-@Preview
 @Composable
 fun AddMeetingScreen(
+    onClose: suspend () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val lazyListState = rememberLazyListState()
@@ -54,6 +55,8 @@ fun AddMeetingScreen(
         scrollState = scrollState,
         lazyListState = lazyListState
     )
+
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -64,8 +67,12 @@ fun AddMeetingScreen(
     ) {
         AppTopBar(
             title = "Новая встреча",
-            startIconId =  R.drawable.ic_back,
-            startIconButtonOnClick = {},
+            startIconId =  R.drawable.ic_close,
+            startIconButtonOnClick = {
+                scope.launch {
+                    onClose()
+                }
+            },
             endIconId = R.drawable.ic_reload,
             endIconButtonOnClick = {}
         )
@@ -216,8 +223,10 @@ private fun LastItemContainer(
     lazyListState: LazyListState
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val topOffset = screenHeight * 0.06f
+    val modalHeight = screenHeight - topOffset
     val appTopBarHeight = 132.dp
-    val lazyHeight = screenHeight - appTopBarHeight
+    val lazyHeight = modalHeight - appTopBarHeight + 16.dp
 
     Box(
         modifier = Modifier.fillMaxSize()

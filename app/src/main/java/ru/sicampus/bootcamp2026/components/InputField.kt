@@ -37,7 +37,7 @@ fun InputField(
     title: String,
     value: String,
     onValueChange: (String) -> Unit,
-    placeholderText: String,
+    placeholderText: String? = null,
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
@@ -67,9 +67,9 @@ fun InputField(
                     onFocusChanged?.invoke(focusState.isFocused)
                 },
             placeholder = {
-                Text(
-                    text = placeholderText
-                )
+                placeholderText?.let { text ->
+                    Text(text = text)
+                }
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,

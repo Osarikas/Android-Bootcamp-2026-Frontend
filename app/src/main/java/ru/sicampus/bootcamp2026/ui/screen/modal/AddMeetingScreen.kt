@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -34,6 +35,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ru.sicampus.bootcamp2026.R
 import ru.sicampus.bootcamp2026.components.AppButton
@@ -42,6 +44,7 @@ import ru.sicampus.bootcamp2026.components.InputField
 import ru.sicampus.bootcamp2026.components.UserItem1
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientBottom
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientTop
+import ru.sicampus.bootcamp2026.ui.theme.SecondaryGray
 import ru.sicampus.bootcamp2026.ui.theme.White
 
 @Composable
@@ -83,13 +86,17 @@ fun AddMeetingScreen(
         )
 
         AddMeetingFooter(
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onClose = onClose,
+            scope = scope
         )
     }
 }
 @Composable
 private fun AddMeetingFooter(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClose: suspend () -> Unit,
+    scope: CoroutineScope
 ) {
     Box(
         modifier = modifier
@@ -106,7 +113,11 @@ private fun AddMeetingFooter(
     ) {
         AppButton(
             text = "Создать",
-            onClick = {},
+            onClick = {
+                scope.launch {
+                    onClose()
+                }
+            },
             enabled = true
         )
     }
@@ -244,7 +255,18 @@ private fun LastItemContainer(
             }
 
             items(100) {
-                UserItem1() // временные элементы
+                Column(
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    UserItem1()  // временные элементы; UserItem() - основные, автарка у пользователя обязательна, если ее нет, то заглушка
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 84.dp, end = 16.dp),
+                        thickness = 1.dp,
+                        color = SecondaryGray
+                    )
+                }
             }
 
             item {

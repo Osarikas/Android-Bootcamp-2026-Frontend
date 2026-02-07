@@ -23,12 +23,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.sicampus.bootcamp2026.ui.theme.Black
 import ru.sicampus.bootcamp2026.ui.theme.PrimaryGray
 import ru.sicampus.bootcamp2026.ui.theme.SecondaryGray
 
@@ -45,7 +48,8 @@ fun InputField(
     enabled: Boolean = true,
     onFocusChanged: ((Boolean) -> Unit)? = null,
     error: String? = null,
-    isPassword: Boolean = false
+    isPassword: Boolean = false,
+    iconId: Int? = null
 ) {
     val passwordVisible = remember { mutableStateOf(false) }
 
@@ -94,6 +98,14 @@ fun InputField(
                                 Icons.Default.VisibilityOff,
                             contentDescription = null,
                             tint = PrimaryGray
+                        )
+                    }
+                }
+                else {
+                    iconId?.let {
+                        Icon(imageVector = ImageVector.vectorResource(iconId),
+                            contentDescription = null,
+                            tint = Black
                         )
                     }
                 }

@@ -193,7 +193,8 @@ private fun ContentAboveLastItem() {
             InputField(
                 title = "Дата",
                 value = "",
-                onValueChange = { }
+                onValueChange = { },
+                iconId = R.drawable.ic_date
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -203,7 +204,8 @@ private fun ContentAboveLastItem() {
             InputField(
                 title = "Время",
                 value = "",
-                onValueChange = { }
+                onValueChange = { },
+                iconId = R.drawable.ic_time
             )
         }
     }

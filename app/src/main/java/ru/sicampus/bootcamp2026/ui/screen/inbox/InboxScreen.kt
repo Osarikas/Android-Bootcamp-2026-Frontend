@@ -26,6 +26,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.sicampus.bootcamp2026.components.InboxItem
 import ru.sicampus.bootcamp2026.components.Title
 import ru.sicampus.bootcamp2026.domain.entities.InvitationEntity
 import ru.sicampus.bootcamp2026.ui.theme.White
@@ -95,29 +96,12 @@ fun InboxContentState(
             }
 
             items(invitations) { invitation ->
-                // InboxItem()
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(invitation.message)
-                    Text(invitation.status)
-                    Text(invitation.meeting.name)
-                    Text(invitation.meeting.description)
-                    Text(invitation.meeting.startTime)
-                    Text(invitation.meeting.ownerName)
-                    Row {
-                        Text(
-                            text = "Accept",
-                            modifier = Modifier
-                                .clickable {onClick(InboxIntent.AcceptInvitation(invitation.id)) }
-                                .padding(8.dp)
-                        )
-                        Text(
-                            text = "Decline",
-                            modifier = Modifier
-                                .clickable { onClick(InboxIntent.DeclineInvitation(invitation.id)) }
-                                .padding(8.dp)
-                        )
-                    }
-                }
+                InboxItem(
+                    invitation,
+                    onAccept = {onClick(InboxIntent.AcceptInvitation(invitation.id)) },
+                    onDecline = {onClick(InboxIntent.DeclineInvitation(invitation.id)) }
+                )
+                Spacer(modifier = Modifier.height(20.dp))
             }
 
             item {

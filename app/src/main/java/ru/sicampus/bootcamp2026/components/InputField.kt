@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -27,6 +28,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sicampus.bootcamp2026.ui.theme.Black
@@ -48,6 +51,11 @@ fun InputField(
     iconId: Int? = null
 ) {
     val passwordVisible = remember { mutableStateOf(false) }
+    val outputTransformation = if (isPassword && !passwordVisible.value) {
+        OutputTransformation {
+            replace(0, length, "•".repeat(length))
+        }
+    } else null
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -60,6 +68,7 @@ fun InputField(
         )
         TextField(
             state = state,
+            outputTransformation = outputTransformation,
             modifier = modifier
                 .fillMaxWidth()
                 .height(60.dp)
@@ -76,6 +85,7 @@ fun InputField(
                 imeAction = imeAction
             ),
             enabled = enabled,
+
             lineLimits = androidx.compose.foundation.text.input.TextFieldLineLimits.SingleLine,
             isError = error != null,
             trailingIcon = {

@@ -54,14 +54,13 @@ import ru.sicampus.bootcamp2026.components.InputField
 import ru.sicampus.bootcamp2026.components.UserItem
 import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeListIntent
 import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeSearchState
-import ru.sicampus.bootcamp2026.ui.screen.meetings.ItemError
-import ru.sicampus.bootcamp2026.ui.screen.meetings.ItemLoading
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientBottom
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientTop
 import ru.sicampus.bootcamp2026.ui.theme.SecondaryGray
 import ru.sicampus.bootcamp2026.ui.theme.White
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import androidx.compose.material3.Text
 import java.util.Calendar
 
 @Composable
@@ -263,6 +262,46 @@ private fun LastItemContainer(
                 }
             }
             item { Spacer(modifier = Modifier.height(116.dp)) }
+        }
+    }
+}
+
+@Composable
+fun ItemLoading() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        AppButton(
+            text = "Загрузка...",
+            onClick = { },
+            enabled = false
+        )
+    }
+}
+
+@Composable
+fun ItemError(onRefresh:() -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Ошибка загрузки",
+            )
+            AppButton(
+                text = "Повторить",
+                onClick = { onRefresh() },
+                enabled = true
+            )
         }
     }
 }

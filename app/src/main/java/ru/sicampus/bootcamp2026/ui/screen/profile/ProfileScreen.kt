@@ -11,31 +11,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.components.InputField
 import ru.sicampus.bootcamp2026.domain.entities.ProfileUpdateEntity
 
 @Composable
@@ -57,7 +54,8 @@ fun Profile(
                 ProfileEditMode(
                     state = state,
                     onCancel = { viewmodel.onIntent(ProfileIntent.Cancel) },
-                    onSave = { viewmodel.onIntent(ProfileIntent.Save(it)) }
+                    onSave = { viewmodel.onIntent(ProfileIntent.Save(it)) },
+                    viewmodel = viewmodel
                 )
             } else {
                 ProfileViewMode(state = state, onRefresh = { viewmodel.onIntent(ProfileIntent.Load) })
@@ -117,6 +115,7 @@ fun ProfileViewMode(state: ProfileState,
 fun ProfileEditMode(
     state: ProfileState,
     onCancel: () -> Unit,
+    viewmodel: ProfileViewModel,
     onSave: (ProfileUpdateEntity) -> Unit
 ) {
     when (state) {
@@ -125,41 +124,36 @@ fun ProfileEditMode(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                var inputName by remember { mutableStateOf(state.user.name) }
-                var inputPosition by remember { mutableStateOf(state.user.position) }
-                var inputEmail by remember { mutableStateOf(state.user.email) }
-                var inputPhone by remember { mutableStateOf(state.user.phoneNumber) }
 
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = inputName,
-                    onValueChange = { inputName = it },
-                    label = { Text("ФИО") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+
+                InputField(
+                    title = "ФИЛ",
+                    state = viewmodel.nameState,
+                    placeholderText = "Введите ФИО",
+                    imeAction = ImeAction.Next
                 )
 
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = inputPosition,
-                    onValueChange = { inputPosition = it },
-                    label = { Text("Должность") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                InputField(
+                    title = "Должность",
+                    state = viewmodel.positionState,
+                    placeholderText = "Введите Должность",
+                    imeAction = ImeAction.Next
                 )
 
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = inputEmail,
-                    onValueChange = { inputEmail = it },
-                    label = { Text("Почта") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                InputField(
+                    title = "Почта",
+                    state = viewmodel.emailState,
+                    placeholderText = "Введите Почту",
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email
                 )
 
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = inputPhone,
-                    onValueChange = { inputPhone = it },
-                    label = { Text("Телефон") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+                InputField(
+                    title = "Телефон",
+                    state = viewmodel.phoneState,
+                    placeholderText = "Введите телефон",
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Phone
                 )
 
                 Column(
@@ -171,10 +165,10 @@ fun ProfileEditMode(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             val updateData = ProfileUpdateEntity(
-                                name = inputName,
-                                position = inputPosition,
-                                email = inputEmail,
-                                phoneNumber = inputPhone
+                                name = viewmodel.nameState.text.toString(),
+                                position = viewmodel.positionState.text.toString(),
+                                email = viewmodel.emailState.text.toString(),
+                                phoneNumber = viewmodel.phoneState.text.toString()
                             )
                             onSave(updateData)
                         }

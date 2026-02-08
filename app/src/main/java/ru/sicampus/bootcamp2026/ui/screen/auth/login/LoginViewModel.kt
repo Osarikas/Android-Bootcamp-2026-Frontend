@@ -32,8 +32,8 @@ class LoginViewModel() : ViewModel(){
         )
     )
     val uiState: StateFlow<LoginState> = _uiState.asStateFlow()
-    val loginState = TextFieldState()
-    val passwordState = TextFieldState()
+    val loginState = TextFieldState() // для стейта
+    val passwordState = TextFieldState() // для стейта
 
     private val _actionFlow =  MutableSharedFlow<LoginAction>()
     val actionFlow = _actionFlow.asSharedFlow()

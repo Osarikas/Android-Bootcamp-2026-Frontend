@@ -53,7 +53,14 @@ fun MainScreen() {
                     if (!isEditMode) {
                         FloatingActionButton(
                             iconId = R.drawable.ic_edit,
-                            onClick = { profileVm.onIntent(ProfileIntent.SetEditMode) }
+                            onClick = {
+                                val currentState = profileVm.uiState.value
+                                if (currentState is ru.sicampus.bootcamp2026.ui.screen.profile.ProfileState.Content) {
+                                    profileVm.prepareEditMode(currentState.user)
+                                } else {
+                                    profileVm.onIntent(ProfileIntent.SetEditMode)
+                                }
+                            }
                         )
                     }
                 }

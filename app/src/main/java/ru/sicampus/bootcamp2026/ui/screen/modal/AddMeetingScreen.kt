@@ -228,7 +228,7 @@ private fun LastItemContainer(
                             )
 
                             HorizontalDivider(
-                                modifier = Modifier.padding(start = 84.dp, end = 16.dp),
+                                modifier = Modifier.padding(start = 96.dp, end = 16.dp),
                                 thickness = 1.dp,
                                 color = SecondaryGray
                             )
@@ -253,8 +253,7 @@ private fun LastItemContainerTopBar(searchState: TextFieldState) {
         InputField(
             state = searchState,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .fillMaxWidth(),
             title = "Участники",
             placeholderText = "Кого бы Вы позвали на встречу?"
         )

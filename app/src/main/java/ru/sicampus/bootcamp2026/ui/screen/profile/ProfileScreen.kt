@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -26,14 +28,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import ru.sicampus.bootcamp2026.R
+import ru.sicampus.bootcamp2026.components.AppButton
 import ru.sicampus.bootcamp2026.components.InputField
 import ru.sicampus.bootcamp2026.domain.entities.ProfileUpdateEntity
+import ru.sicampus.bootcamp2026.ui.theme.Black
+import ru.sicampus.bootcamp2026.ui.theme.White
 
 @Composable
 fun Profile(
@@ -157,12 +164,14 @@ fun ProfileEditMode(
                 )
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 40.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
+                    AppButton(
+                        text = "Сохранить",
                         onClick = {
                             val updateData = ProfileUpdateEntity(
                                 name = viewmodel.nameState.text.toString(),
@@ -172,16 +181,17 @@ fun ProfileEditMode(
                             )
                             onSave(updateData)
                         }
-                    ) {
-                        Text("Сохранить")
-                    }
-
-                    TextButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = onCancel
-                    ) {
-                        Text("Отмена")
-                    }
+                    )
+                    AppButton(
+                        text = "Отмена",
+                        onClick = {
+                            onCancel()
+                        },
+                        activeColors = ButtonDefaults.buttonColors(
+                            containerColor = White,
+                            contentColor = Black
+                        )
+                    )
                 }
             }
         }

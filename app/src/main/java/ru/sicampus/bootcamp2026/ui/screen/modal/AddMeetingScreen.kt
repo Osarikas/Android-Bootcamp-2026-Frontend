@@ -152,29 +152,22 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
         placeholderText = "Где будет проходить встреча?",
     )
     Row(modifier = Modifier.fillMaxWidth()) {
-        // Поле ДАТА
         Box(
             modifier = Modifier
                 .weight(1f)
-                // Клик вешаем на Box
                 .clickable { showDateTimePicker(context, viewModel.dateState, viewModel.timeState) }
         ) {
             InputField(
                 title = "Дата",
                 state = viewModel.dateState,
                 iconId = R.drawable.ic_date,
-                enabled = false // Поле выключено, чтобы не было курсора и клавиатуры
+                enabled = false
             )
-            // НЕВИДИМЫЙ СЛОЙ ПОВЕРХ:
-            // Этот Box перехватит клик, даже если InputField его блокирует
             Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
                 showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
             })
         }
-
         Spacer(modifier = Modifier.width(16.dp))
-
-        // Поле ВРЕМЯ
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -185,7 +178,6 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
                 iconId = R.drawable.ic_time,
                 enabled = false
             )
-            // Тот же невидимый слой:
             Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
                 showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
             })

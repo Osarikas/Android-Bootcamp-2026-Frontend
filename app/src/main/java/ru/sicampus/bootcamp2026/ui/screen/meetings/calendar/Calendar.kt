@@ -9,10 +9,12 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import ru.sicampus.bootcamp2026.ui.screen.meetings.calendar.month.MonthCalendar
 import ru.sicampus.bootcamp2026.ui.screen.meetings.calendar.week.WeekCalendar
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 @Composable
 fun Calendar(
@@ -30,12 +33,29 @@ fun Calendar(
 ) {
     var mode  by remember { mutableStateOf(CalendarState.WEEK) }
 
+    val monthPagerState = rememberPagerState(
+        initialPage = 5000,
+        pageCount = { 10000 }
+    )
+    val currentMonth = remember {
+        LocalDate.now().withDayOfMonth(1)
+    }
+    LaunchedEffect(selectedDate) {
+        val targetPage =
+            5000 + ChronoUnit.MONTHS.between(
+                currentMonth,
+                selectedDate.withDayOfMonth(1)
+            ).toInt()
+        monthPagerState.scrollToPage(targetPage)
+    }
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+            .fillMaxWidth()
+            .heightIn(max = 290.dp)
     ) {
-        CalendarButton(
+        CalendarTitle(
+            pagerState = monthPagerState,
             mode = mode,
             onClick = {
                 mode =
@@ -45,7 +65,12 @@ fun Calendar(
                         CalendarState.WEEK
             }
         )
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        WeekHeader(
+            selectedDate
+        )
 
         AnimatedContent(
             targetState = mode,
@@ -69,6 +94,7 @@ fun Calendar(
 
                 CalendarState.MONTH -> {
                     MonthCalendar(
+                        pagerState = monthPagerState,
                         selectedDate = selectedDate,
                         onDateSelected = onDateSelected
                     )

@@ -3,7 +3,7 @@ package ru.sicampus.bootcamp2026.ui.screen.meetings.calendar.month
 import java.time.DayOfWeek
 import java.time.LocalDate
 
-fun generateMonthDays(
+fun generateMonth(
     selectedDate: LocalDate
 ): List<LocalDate?> {
     val firstDayOfMonth =

@@ -6,41 +6,40 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.sicampus.bootcamp2026.ui.screen.meetings.calendar.DayItem
-import ru.sicampus.bootcamp2026.ui.screen.meetings.calendar.WeekHeader
 import java.time.LocalDate
 
 @Composable
 fun MonthCalendar(
+    pagerState: PagerState,
     selectedDate: LocalDate,
     onDateSelected: (LocalDate) -> Unit
 ) {
     val today = remember {
         LocalDate.now()
     }
-    val pagerState = rememberPagerState(
-        initialPage = 5000,
-        pageCount = { 10000 }
-    )
-    val currentMonth = remember { selectedDate.withDayOfMonth(1) }
+    val currentMonth = remember {
+        LocalDate.now().withDayOfMonth(1)
+    }
 
-    Column {
-        WeekHeader(selectedDate)
-        VerticalPager(
-            state = pagerState,
+    VerticalPager(
+        state = pagerState,
+        modifier = Modifier.fillMaxWidth()
+    ) { page ->
+        val month = currentMonth.plusMonths(
+            (page - 5000).toLong()
+        )
+        val days = generateMonth(month)
+
+        Column(
             modifier = Modifier.fillMaxWidth()
-        ) { page ->
-            val month = currentMonth.plusMonths(
-                (page - 5000).toLong()
-            )
-            val days = generateMonthDays(month)
-
+        ) {
             repeat(days.size / 7) { row ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),

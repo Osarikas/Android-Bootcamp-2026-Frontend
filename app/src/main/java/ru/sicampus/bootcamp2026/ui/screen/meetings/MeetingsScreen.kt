@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.FlowPreview
-import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
+import ru.sicampus.bootcamp2026.domain.entities.EmployeeListEntity
 
 @OptIn(FlowPreview::class)
 @Composable
@@ -207,7 +207,7 @@ fun ItemLoading(){
 }
 @Composable
 fun ItemUser(
-    user: EmployeeEntity,
+    user: EmployeeListEntity,
     selectedUserName: String? = null,
     onClick: () -> Unit
 ){
@@ -233,12 +233,9 @@ fun ItemUser(
 
         Column {
             Text(user.name)
-            Text(user.position)
 
             if (selectedUserName == user.name) {
                 Text(user.username)
-                Text(user.email)
-                Text(user.phoneNumber)
             }
         }
     }

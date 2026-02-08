@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreateInvitationRequestDTO(
     @SerialName ("meetingId") val meetingId: Int,
-    @SerialName ("employeeUsername") val employeeUsername: String,
+    @SerialName ("employeeUsernames") val employeeUsernames: List<String>,
     @SerialName ("message") val message: String
 )

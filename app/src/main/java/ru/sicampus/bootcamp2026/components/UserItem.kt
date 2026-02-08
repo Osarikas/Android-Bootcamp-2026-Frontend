@@ -23,23 +23,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.sicampus.bootcamp2026.R
 import coil3.compose.AsyncImage
-import ru.sicampus.bootcamp2026.domain.entities.EmployeeEntity
+import ru.sicampus.bootcamp2026.domain.entities.EmployeeListEntity
 import ru.sicampus.bootcamp2026.ui.theme.Black
 import ru.sicampus.bootcamp2026.ui.theme.PrimaryGray
 import ru.sicampus.bootcamp2026.ui.theme.White
 
 @Composable
 fun UserItem(
-    user: EmployeeEntity,
-    selectedUserName: String? = null,
-    onClick: () -> Unit
+    user: EmployeeListEntity,
+    isSelected: Boolean,
+    onCheckChange: () -> Unit
 ) {
-    val isSelected = selectedUserName == user.name
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onClick()
+                onCheckChange()
             }
             .padding(horizontal = 16.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -83,67 +82,8 @@ fun UserItem(
                 text = user.name,
                 fontSize = 14.sp
             )
-
-            /* if (selectedUserName == user.name) {
-                Text(user.position)
-                Text(user.username)
-                Text(user.email)
-                Text(user.phoneNumber)
-            } */
         }
     }
 }
 
 
-// Временно. Вместо нижней функции нужно использовать функцию выше (основную)
-@Composable
-fun UserItem1() {
-    val isSelected = false
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-            }
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(
-            modifier = Modifier
-                .size(20.dp)
-                .clip(CircleShape)
-                .border(
-                    width = 2.dp,
-                    color = if (isSelected) Black else PrimaryGray,
-                    shape = CircleShape
-                )
-                .background(
-                    color = if (isSelected) Black else White,
-                    shape = CircleShape
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isSelected) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_check),
-                    contentDescription = null,
-                    modifier = Modifier.size(12.dp),
-                    tint = White
-                )
-            }
-        }
-
-        Column {
-            Text(
-                text = "Иванов Иван Иванович",
-                fontSize = 14.sp)
-
-            if (isSelected) {
-                Text("Разработчик")
-                Text("user.username")
-                Text("user.email")
-                Text("user.phoneNumber")
-            }
-        }
-    }
-}

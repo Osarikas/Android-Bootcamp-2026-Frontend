@@ -1,7 +1,6 @@
 package ru.sicampus.bootcamp2026.data.repository
 
 import ru.sicampus.bootcamp2026.data.dto.AnswerInvitationRequestDTO
-import ru.sicampus.bootcamp2026.data.dto.CreateInvitationRequestDTO
 import ru.sicampus.bootcamp2026.data.dto.toEntity
 import ru.sicampus.bootcamp2026.data.source.InvitationDataSource
 import ru.sicampus.bootcamp2026.domain.entities.InvitationEntity
@@ -21,12 +20,5 @@ class InvitationRepository(
                 status = if (isAccepted) "ACCEPTED" else "DECLINED"
             )
         )
-    }
-    suspend fun createInvitation(meetingId : Int, message : String, username: String) : Result<Unit>{
-        return invitationDataSource.createInvitation(CreateInvitationRequestDTO(
-            meetingId = meetingId,
-            message = message,
-            employeeUsername = username
-        ))
     }
 }

@@ -21,6 +21,6 @@ class SearchEmployeesUseCase(
         )
     }
     private companion object{
-        const val COUNT = 20 //replace on 20
+        const val COUNT = 20
     }
 }

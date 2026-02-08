@@ -7,5 +7,5 @@ data class CreateMeetingRequestDTO (
     val name: String,
     val description: String,
     val startTime: String,
-    val endTime: String
+    val endTime: String,
 )

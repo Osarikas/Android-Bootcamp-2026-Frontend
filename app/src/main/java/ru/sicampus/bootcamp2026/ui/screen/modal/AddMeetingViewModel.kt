@@ -24,6 +24,8 @@ import ru.sicampus.bootcamp2026.domain.entities.CreateMeetingEntity
 import ru.sicampus.bootcamp2026.domain.entities.PagingEmployeeListEntity
 import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeListIntent
 import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeSearchState
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class AddMeetingViewModel : ViewModel() {
     private val mutex = Mutex()
@@ -176,6 +178,7 @@ class AddMeetingViewModel : ViewModel() {
         }
     }
 
+
     private fun dropLastTempItem() {
         if (actualResult.isNotEmpty()) {
             val last = actualResult.last()
@@ -195,19 +198,40 @@ class AddMeetingViewModel : ViewModel() {
         viewModelScope.launch {
             val usernames = _selectedUsernames.value.toList()
 
-            android.util.Log.d("DEBUG_TAG", "Usernames in VM: $usernames, count: ${usernames.size}")
-            val draft = CreateMeetingEntity(
-                name = titleState.text.toString(),
-                description = locationState.text.toString(),
-                startTime = "2026-06-08T09:00:00",
-                endTime = "2026-06-08T10:00:00"
-            )
+            val dateText = dateState.text.toString()
+            val timeText = timeState.text.toString()
 
-            createMeetingUseCase(draft, usernames).onSuccess {
+            if (dateText.isBlank() || timeText.isBlank()) {
+                _uiState.emit(EmployeeSearchState.Error("Выберите дату и время"))
+                return@launch
+            }
+
+            try {
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                val startDateTime = LocalDateTime.parse("${dateText}T${timeText}:00", formatter)
+
+                val endDateTime = startDateTime.plusHours(1)
+
+                val startTimeIso = startDateTime.format(formatter)
+                val endTimeIso = endDateTime.format(formatter)
+
+                android.util.Log.d("DEBUG_TAG", "Start: $startTimeIso, End: $endTimeIso")
+
+                val draft = CreateMeetingEntity(
+                    name = titleState.text.toString(),
+                    description = locationState.text.toString(),
+                    startTime = startTimeIso,
+                    endTime = endTimeIso
+                )
+
+                createMeetingUseCase(draft, usernames).onSuccess {
                     onSuccess()
                 }.onFailure { e ->
-                    _uiState.emit(EmployeeSearchState.Error(e.message ?: "Ошибка"))
+                    _uiState.emit(EmployeeSearchState.Error(e.message ?: "Ошибка при создании"))
                 }
+            } catch (_: Exception) {
+                _uiState.emit(EmployeeSearchState.Error("Ошибка формата даты"))
             }
         }
+    }
     }

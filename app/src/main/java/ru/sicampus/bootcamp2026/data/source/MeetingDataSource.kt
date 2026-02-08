@@ -1,5 +1,6 @@
 package ru.sicampus.bootcamp2026.data.source
 
+import android.util.Log
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -13,6 +14,7 @@ import ru.sicampus.bootcamp2026.data.dto.MeetingResponseDTO
 
 class MeetingDataSource {
     suspend fun createMeeting(createMeetingRequestDTO: CreateMeetingRequestDTO): Result<MeetingResponseDTO> = withContext(Dispatchers.IO){
+        Log.d("KTOR", "createMeeting: $createMeetingRequestDTO")
         runCatching {
             val result = Network.client.post("api/meeting"){
                 setBody(createMeetingRequestDTO)

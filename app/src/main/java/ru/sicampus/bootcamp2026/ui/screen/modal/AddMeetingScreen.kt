@@ -1,6 +1,7 @@
 package ru.sicampus.bootcamp2026.ui.screen.modal
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -59,6 +60,9 @@ import ru.sicampus.bootcamp2026.ui.theme.BgGradientBottom
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientTop
 import ru.sicampus.bootcamp2026.ui.theme.SecondaryGray
 import ru.sicampus.bootcamp2026.ui.theme.White
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import java.util.Calendar
 
 @Composable
 fun AddMeetingScreen(
@@ -107,7 +111,6 @@ fun AddMeetingScreen(
         )
     }
 }
-
 @Composable
 private fun MainScrollableContent(
     scrollState: ScrollState,
@@ -136,6 +139,8 @@ private fun MainScrollableContent(
 
 @Composable
 private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+
     InputField(
         title = "Название",
         state = viewModel.titleState,
@@ -147,20 +152,43 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
         placeholderText = "Где будет проходить встреча?",
     )
     Row(modifier = Modifier.fillMaxWidth()) {
-        Box(modifier = Modifier.weight(1f)) {
+        // Поле ДАТА
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                // Клик вешаем на Box
+                .clickable { showDateTimePicker(context, viewModel.dateState, viewModel.timeState) }
+        ) {
             InputField(
                 title = "Дата",
                 state = viewModel.dateState,
-                iconId = R.drawable.ic_date
+                iconId = R.drawable.ic_date,
+                enabled = false // Поле выключено, чтобы не было курсора и клавиатуры
             )
+            // НЕВИДИМЫЙ СЛОЙ ПОВЕРХ:
+            // Этот Box перехватит клик, даже если InputField его блокирует
+            Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
+                showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
+            })
         }
+
         Spacer(modifier = Modifier.width(16.dp))
-        Box(modifier = Modifier.weight(1f)) {
+
+        // Поле ВРЕМЯ
+        Box(
+            modifier = Modifier
+                .weight(1f)
+        ) {
             InputField(
                 title = "Время",
                 state = viewModel.timeState,
-                iconId = R.drawable.ic_time
+                iconId = R.drawable.ic_time,
+                enabled = false
             )
+            // Тот же невидимый слой:
+            Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
+                showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
+            })
         }
     }
 }
@@ -323,4 +351,30 @@ private fun rememberNestedScrollConnection(
             }
         }
     }
+}
+@SuppressLint("DefaultLocale")
+fun showDateTimePicker(context: Context, dateState: TextFieldState, timeState: TextFieldState) {
+    val calendar = Calendar.getInstance()
+
+    DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            val date = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+            dateState.edit { replace(0, length, date) }
+
+            TimePickerDialog(
+                context,
+                { _, hourOfDay, _ ->
+                    val time = String.format("%02d:00", hourOfDay)
+                    timeState.edit { replace(0, length, time) }
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                0,
+                true
+            ).show()
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    ).show()
 }

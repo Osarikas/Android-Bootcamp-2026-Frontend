@@ -1,6 +1,8 @@
 package ru.sicampus.bootcamp2026.ui.screen.modal
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,14 +49,20 @@ class AddMeetingViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<EmployeeSearchState>(EmployeeSearchState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    // Состояние полей ввода
     val titleState = TextFieldState()
     val locationState = TextFieldState()
     val dateState = TextFieldState()
     val timeState = TextFieldState()
     val searchState = TextFieldState()
 
-    // Выбранные пользователи теперь по username
+    val isFormValid by derivedStateOf {
+        titleState.text.isNotBlank() &&
+                locationState.text.isNotBlank() &&
+                dateState.text.isNotBlank() &&
+                timeState.text.isNotBlank() &&
+                _selectedUsernames.value.isNotEmpty()
+    }
+
     private val _selectedUsernames = MutableStateFlow<Set<String>>(emptySet())
     val selectedUsernames = _selectedUsernames.asStateFlow()
 
@@ -77,7 +85,6 @@ class AddMeetingViewModel : ViewModel() {
         when (intent) {
             is EmployeeListIntent.LoadMore -> {
                 val state = currentContentState
-                // Проверяем, что не последняя страница и сейчас нет активной загрузки (последний элемент не лоадер)
                 if (state != null && !state.isLastPage && actualResult.lastOrNull() !is EmployeeSearchState.Item.Loading) {
                     val currentCount = actualResult.filterIsInstance<EmployeeSearchState.Item.Employee>().size
                     getData(query = currentSearchQuery, offset = currentCount)
@@ -131,7 +138,6 @@ class AddMeetingViewModel : ViewModel() {
                 dropLastTempItem()
             }
 
-            // Маппим сотрудников и добавляем в общий список
             actualResult.addAll(data.users.map { EmployeeSearchState.Item.Employee(it) })
 
             _uiState.emit(EmployeeSearchState.Content(

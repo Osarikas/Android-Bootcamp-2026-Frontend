@@ -54,14 +54,14 @@ import ru.sicampus.bootcamp2026.components.InputField
 import ru.sicampus.bootcamp2026.components.UserItem
 import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeListIntent
 import ru.sicampus.bootcamp2026.ui.screen.meetings.EmployeeSearchState
+import ru.sicampus.bootcamp2026.ui.screen.meetings.ItemError
+import ru.sicampus.bootcamp2026.ui.screen.meetings.ItemLoading
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientBottom
 import ru.sicampus.bootcamp2026.ui.theme.BgGradientTop
 import ru.sicampus.bootcamp2026.ui.theme.SecondaryGray
 import ru.sicampus.bootcamp2026.ui.theme.White
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.compose.material3.Text
-import androidx.compose.ui.platform.LocalContext
 import java.util.Calendar
 
 @Composable
@@ -76,7 +76,7 @@ fun AddMeetingScreen(
     val lazyListState = rememberLazyListState()
     val nestedScrollConnection = rememberNestedScrollConnection(scrollState, lazyListState)
     val scope = rememberCoroutineScope()
-    val isFormValid = viewModel.isFormValid
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -107,8 +107,7 @@ fun AddMeetingScreen(
                         scope.launch { onClose() }
                     }
                 )
-            },
-            isEnabled = isFormValid
+            }
         )
     }
 }
@@ -140,7 +139,7 @@ private fun MainScrollableContent(
 
 @Composable
 private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
-    val context = LocalContext.current
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     InputField(
         title = "Название",
@@ -153,29 +152,25 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
         placeholderText = "Где будет проходить встреча?",
     )
     Row(modifier = Modifier.fillMaxWidth()) {
-        // Поле ДАТА
         Box(
             modifier = Modifier
                 .weight(1f)
-                // Клик вешаем на Box
                 .clickable { showDateTimePicker(context, viewModel.dateState, viewModel.timeState) }
         ) {
             InputField(
                 title = "Дата",
                 state = viewModel.dateState,
                 iconId = R.drawable.ic_date,
-                enabled = false // Поле выключено, чтобы не было курсора и клавиатуры
+                enabled = false
             )
-            // НЕВИДИМЫЙ СЛОЙ ПОВЕРХ:
-            // Этот Box перехватит клик, даже если InputField его блокирует
-            Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
-                showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
-            })
+            Box(modifier = Modifier
+                .matchParentSize()
+                .zIndex(1f)
+                .clickable {
+                    showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
+                })
         }
-
         Spacer(modifier = Modifier.width(16.dp))
-
-        // Поле ВРЕМЯ
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -186,10 +181,12 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
                 iconId = R.drawable.ic_time,
                 enabled = false
             )
-            // Тот же невидимый слой:
-            Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
-                showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
-            })
+            Box(modifier = Modifier
+                .matchParentSize()
+                .zIndex(1f)
+                .clickable {
+                    showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
+                })
         }
     }
 }
@@ -288,41 +285,11 @@ private fun LastItemContainerTopBar(searchState: TextFieldState) {
         )
     }
 }
-@Composable
-fun ItemError(onRefresh: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text("Ошибка загрузки данных", color = SecondaryGray)
-            AppButton(text = "Повторить", onClick = onRefresh)
-        }
-    }
-}
-
-@Composable
-fun ItemLoading() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Загрузка...", color = SecondaryGray)
-    }
-}
 
 @Composable
 private fun AddMeetingFooter(
     modifier: Modifier = Modifier,
     onSave: () -> Unit,
-    isEnabled: Boolean,
 ) {
     Box(
         modifier = modifier
@@ -340,7 +307,7 @@ private fun AddMeetingFooter(
         AppButton(
             text = "Создать",
             onClick = onSave,
-            enabled = isEnabled
+            enabled = true
         )
     }
 }

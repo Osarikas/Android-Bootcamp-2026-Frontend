@@ -37,7 +37,9 @@ import ru.sicampus.bootcamp2026.ui.theme.White
 
 @Preview
 @Composable
-fun InboxItem() {
+fun InboxItem(
+
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -83,16 +85,20 @@ fun InboxItem() {
         ) {
             AppButton(
                 text = "Принять",
+                onClick = {
+
+                },
                 modifier = Modifier
                     .weight(1f)
                     .height(36.dp),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
-                onClick = { }
             )
             AppButton(
                 text = "Принять",
-                onClick = { },
+                onClick = {
+
+                },
                 modifier = Modifier
                     .weight(1f)
                     .height(36.dp),

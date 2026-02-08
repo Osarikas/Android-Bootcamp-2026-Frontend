@@ -153,17 +153,21 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
         placeholderText = "Где будет проходить встреча?",
     )
     Row(modifier = Modifier.fillMaxWidth()) {
+        // Поле ДАТА
         Box(
             modifier = Modifier
                 .weight(1f)
+                // Клик вешаем на Box
                 .clickable { showDateTimePicker(context, viewModel.dateState, viewModel.timeState) }
         ) {
             InputField(
                 title = "Дата",
                 state = viewModel.dateState,
                 iconId = R.drawable.ic_date,
-                enabled = false
+                enabled = false // Поле выключено, чтобы не было курсора и клавиатуры
             )
+            // НЕВИДИМЫЙ СЛОЙ ПОВЕРХ:
+            // Этот Box перехватит клик, даже если InputField его блокирует
             Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
                 showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
             })
@@ -171,6 +175,7 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
 
         Spacer(modifier = Modifier.width(16.dp))
 
+        // Поле ВРЕМЯ
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -181,6 +186,7 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
                 iconId = R.drawable.ic_time,
                 enabled = false
             )
+            // Тот же невидимый слой:
             Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
                 showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
             })
@@ -265,6 +271,24 @@ private fun LastItemContainer(
 }
 
 @Composable
+private fun LastItemContainerTopBar(searchState: TextFieldState) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(brush = BgGradientTop)
+            .padding(bottom = 8.dp)
+            .zIndex(1f)
+    ) {
+        InputField(
+            state = searchState,
+            modifier = Modifier
+                .fillMaxWidth(),
+            title = "Участники",
+            placeholderText = "Кого бы Вы позвали на встречу?"
+        )
+    }
+}
+@Composable
 fun ItemError(onRefresh: () -> Unit) {
     Box(
         modifier = Modifier
@@ -295,25 +319,6 @@ fun ItemLoading() {
 }
 
 @Composable
-private fun LastItemContainerTopBar(searchState: TextFieldState) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(brush = BgGradientTop)
-            .padding(bottom = 8.dp)
-            .zIndex(1f)
-    ) {
-        InputField(
-            state = searchState,
-            modifier = Modifier
-                .fillMaxWidth(),
-            title = "Участники",
-            placeholderText = "Кого бы Вы позвали на встречу?"
-        )
-    }
-}
-
-@Composable
 private fun AddMeetingFooter(
     modifier: Modifier = Modifier,
     onSave: () -> Unit,
@@ -335,7 +340,7 @@ private fun AddMeetingFooter(
         AppButton(
             text = "Создать",
             onClick = onSave,
-            enabled =  isEnabled
+            enabled = isEnabled
         )
     }
 }

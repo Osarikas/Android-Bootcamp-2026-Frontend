@@ -113,8 +113,11 @@ fun InputField(
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = SecondaryGray,
                 focusedContainerColor = SecondaryGray,
+                disabledContainerColor = SecondaryGray,
+                disabledTextColor = Black,
                 unfocusedPlaceholderColor = PrimaryGray,
                 focusedPlaceholderColor = PrimaryGray,
+                disabledPlaceholderColor = PrimaryGray,
                 errorContainerColor = SecondaryGray,
                 errorIndicatorColor = MaterialTheme.colorScheme.error,
                 focusedIndicatorColor = Color.Transparent,

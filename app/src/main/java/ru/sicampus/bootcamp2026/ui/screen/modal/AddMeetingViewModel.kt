@@ -80,6 +80,9 @@ class AddMeetingViewModel : ViewModel() {
     private fun loadInitialData() {
         getData(query = "", offset = 0)
     }
+    fun clearSelectedUsernames() {
+        _selectedUsernames.value = emptySet()
+    }
 
     fun onIntent(intent: EmployeeListIntent) {
         when (intent) {

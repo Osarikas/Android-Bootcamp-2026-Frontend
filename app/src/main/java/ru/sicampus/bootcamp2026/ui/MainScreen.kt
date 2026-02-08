@@ -65,15 +65,7 @@ fun MainScreen() {
                     }
                 }
 
-                destination?.hasRoute<AppRoute.InboxRoute>() == true -> {
-                    FloatingActionButton(
-                        iconId = R.drawable.ic_add,
-                        onClick = {
-                        }
-                    )
-                }
-
-                destination?.hasRoute<AppRoute.MeetingsRoute>() == true -> {
+                destination?.hasRoute<AppRoute.InboxRoute>() == true || destination?.hasRoute<AppRoute.MeetingsRoute>() == true -> {
                     FloatingActionButton(
                         iconId = R.drawable.ic_add,
                         onClick = {

@@ -61,6 +61,7 @@ import ru.sicampus.bootcamp2026.ui.theme.White
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.compose.material3.Text
+import androidx.compose.ui.platform.LocalContext
 import java.util.Calendar
 
 @Composable
@@ -75,6 +76,7 @@ fun AddMeetingScreen(
     val lazyListState = rememberLazyListState()
     val nestedScrollConnection = rememberNestedScrollConnection(scrollState, lazyListState)
     val scope = rememberCoroutineScope()
+    val isFormValid = viewModel.isFormValid
 
     Box(
         modifier = Modifier
@@ -104,9 +106,11 @@ fun AddMeetingScreen(
                 viewModel.createMeeting(
                     onSuccess = {
                         scope.launch { onClose() }
+                        viewModel.clearSelectedUsernames()
                     }
                 )
-            }
+            },
+            isEnabled = isFormValid
         )
     }
 }
@@ -138,7 +142,7 @@ private fun MainScrollableContent(
 
 @Composable
 private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
-    val context = androidx.compose.ui.platform.LocalContext.current
+    val context = LocalContext.current
 
     InputField(
         title = "Название",
@@ -267,17 +271,16 @@ private fun LastItemContainer(
 }
 
 @Composable
-fun ItemLoading() {
+fun ItemLoading(
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
-        AppButton(
+        Text(
             text = "Загрузка...",
-            onClick = { },
-            enabled = false
         )
     }
 }
@@ -329,6 +332,7 @@ private fun LastItemContainerTopBar(searchState: TextFieldState) {
 private fun AddMeetingFooter(
     modifier: Modifier = Modifier,
     onSave: () -> Unit,
+    isEnabled: Boolean
 ) {
     Box(
         modifier = modifier
@@ -346,7 +350,7 @@ private fun AddMeetingFooter(
         AppButton(
             text = "Создать",
             onClick = onSave,
-            enabled = true
+            enabled = isEnabled
         )
     }
 }

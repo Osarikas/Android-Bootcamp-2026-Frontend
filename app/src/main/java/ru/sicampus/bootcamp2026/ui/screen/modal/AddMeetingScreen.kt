@@ -163,9 +163,12 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
                 iconId = R.drawable.ic_date,
                 enabled = false
             )
-            Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
-                showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
-            })
+            Box(modifier = Modifier
+                .matchParentSize()
+                .zIndex(1f)
+                .clickable {
+                    showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
+                })
         }
         Spacer(modifier = Modifier.width(16.dp))
         Box(
@@ -178,9 +181,12 @@ private fun ContentAboveLastItem(viewModel: AddMeetingViewModel) {
                 iconId = R.drawable.ic_time,
                 enabled = false
             )
-            Box(modifier = Modifier.matchParentSize().zIndex(1f).clickable {
-                showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
-            })
+            Box(modifier = Modifier
+                .matchParentSize()
+                .zIndex(1f)
+                .clickable {
+                    showDateTimePicker(context, viewModel.dateState, viewModel.timeState)
+                })
         }
     }
 }
